@@ -9,6 +9,9 @@ concurrency:
   group: poll-listings
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   poll:
     runs-on: ubuntu-latest
