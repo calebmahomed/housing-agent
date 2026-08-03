@@ -1,0 +1,6 @@
+tenant-docs/
+claude/
+__pycache__/
+*.pyc
+.DS_Store
+data/queued_listings.json

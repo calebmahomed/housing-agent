@@ -1,0 +1,6 @@
+cities:
+  - Den Haag
+  - Delft
+  - Rotterdam
+max_total_monthly: 1500
+min_bedrooms: 2
