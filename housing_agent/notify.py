@@ -1,12 +1,16 @@
 import os
+from typing import Optional
 
 import requests
 
 from .listing import Listing
 
 
-def format_listing(listing: Listing) -> str:
-    return f"{listing.address}, {listing.city} — €{listing.total_monthly:.0f}/mo\n{listing.url}"
+def format_listing(listing: Listing, commute: Optional[str] = None) -> str:
+    text = f"{listing.address}, {listing.city} — €{listing.total_monthly:.0f}/mo\n{listing.url}"
+    if commute:
+        text += f"\n{commute}"
+    return text
 
 
 def send_telegram(text: str) -> None:

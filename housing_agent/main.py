@@ -1,5 +1,6 @@
 import yaml
 
+from .commute import commute_highlight
 from .dedup import is_duplicate
 from .filters import passes_hard_filters
 from .ingest import fetch_new_alert_emails
@@ -25,7 +26,8 @@ def main() -> None:
         if is_duplicate(listing, seen):
             continue
         seen.append(listing.to_seen_record())
-        to_notify.append(format_listing(listing))
+        commute = commute_highlight(f"{listing.address}, {listing.city}")
+        to_notify.append(format_listing(listing, commute))
 
     if in_quiet_hours():
         save(QUEUED_PATH, to_notify)

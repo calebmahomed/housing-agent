@@ -3,6 +3,7 @@
 from datetime import datetime
 from pathlib import Path
 
+from housing_agent.commute import _parse_duration_seconds
 from housing_agent.dedup import is_duplicate
 from housing_agent.filters import passes_hard_filters
 from housing_agent.ingest import parse_funda, parse_pararius
@@ -59,6 +60,10 @@ def test_cross_source_dedup():
     seen = [{"address": "Voorstraat 5, Delft", "size_m2": 60, "total_monthly": 1800}]
     dup = Listing(source="funda", external_id="2", url="", address="voorstraat  5, delft", city="Delft", rent=1850, size_m2=61)
     assert is_duplicate(dup, seen)
+
+
+def test_parse_duration_seconds():
+    assert _parse_duration_seconds("1080s") == 1080
 
 
 def test_quiet_hours_wraps_midnight():
