@@ -33,13 +33,20 @@ def _duration_minutes(origin_address: str, travel_mode: str) -> Optional[int]:
     return round(_parse_duration_seconds(routes[0]["duration"]) / 60)
 
 
+def format_minutes(total_minutes: int) -> str:
+    hours, minutes = divmod(total_minutes, 60)
+    if hours:
+        return f"{hours}h {minutes}min" if minutes else f"{hours}h"
+    return f"{minutes}min"
+
+
 def commute_highlight(origin_address: str) -> Optional[str]:
-    """'🚲 18 min · 🚆 25 min', or None if both lookups fail."""
+    """'🚲 1h 5min · 🚆 25min', or None if both lookups fail."""
     bike = _duration_minutes(origin_address, "BICYCLE")
     transit = _duration_minutes(origin_address, "TRANSIT")
     parts = []
     if bike is not None:
-        parts.append(f"\U0001F6B2 {bike} min")
+        parts.append(f"\U0001F6B2 {format_minutes(bike)}")
     if transit is not None:
-        parts.append(f"\U0001F686 {transit} min")
+        parts.append(f"\U0001F686 {format_minutes(transit)}")
     return " · ".join(parts) if parts else None

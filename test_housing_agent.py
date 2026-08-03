@@ -3,14 +3,20 @@
 from datetime import datetime
 from pathlib import Path
 
-from housing_agent.commute import _parse_duration_seconds
+from housing_agent.commute import _parse_duration_seconds, format_minutes
 from housing_agent.dedup import is_duplicate
 from housing_agent.filters import passes_hard_filters
-from housing_agent.ingest import parse_funda, parse_pararius
+from housing_agent.ingest import extract_image_urls, parse_funda, parse_pararius
 from housing_agent.listing import Listing
 from housing_agent.quiet_hours import in_quiet_hours
 
-PREFS = {"cities": ["Den Haag", "Delft"], "annual_income": 55000, "income_to_rent_ratio": 3, "min_bedrooms": 2}
+PREFS = {
+    "cities": ["Den Haag", "Delft"],
+    "annual_income": 55000,
+    "income_to_rent_ratio": 3,
+    "min_bedrooms": 2,
+    "exclude_phrases": ["55+", "alleen studenten"],
+}
 
 
 def load_fixture(name: str) -> tuple[str, str]:
@@ -62,8 +68,29 @@ def test_cross_source_dedup():
     assert is_duplicate(dup, seen)
 
 
+def test_hard_filters_reject_excluded_phrase():
+    listing = Listing(source="x", external_id="1", url="", address="A", city="Delft", rent=1000,
+                       description="Woning alleen voor 55-plussers, alleen studenten toegestaan")
+    assert not passes_hard_filters(listing, PREFS)
+
+
+def test_extract_image_urls_skips_logos():
+    html = (
+        '<img src="https://cdn.example.com/photos/kitchen.jpg">'
+        '<img src="https://cdn.example.com/logo.png">'
+        '<img src="https://cdn.example.com/photos/kitchen.jpg">'
+    )
+    assert extract_image_urls(html) == ["https://cdn.example.com/photos/kitchen.jpg"]
+
+
 def test_parse_duration_seconds():
     assert _parse_duration_seconds("1080s") == 1080
+
+
+def test_format_minutes():
+    assert format_minutes(45) == "45min"
+    assert format_minutes(65) == "1h 5min"
+    assert format_minutes(120) == "2h"
 
 
 def test_quiet_hours_wraps_midnight():

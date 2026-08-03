@@ -1,9 +1,9 @@
 """IMAP ingestion of Pararius+/Funda alert emails.
 
-# ponytail: parse_pararius/parse_funda are best-guess regexes against typical
-# alert formats — nobody has captured a real one yet (that's Phase 0). Once
-# real emails land, update these two functions and their fixtures; nothing
-# else in the pipeline needs to change.
+# ponytail: parse_pararius/parse_funda (including image-URL extraction) are
+# best-guess regexes against typical alert formats — nobody has captured a
+# real one yet (that's Phase 0). Once real emails land, update these two
+# functions and their fixtures; nothing else in the pipeline needs to change.
 """
 
 import email
@@ -21,15 +21,37 @@ IMAP_PASSWORD = "IMAP_PASSWORD"
 IMAP_FOLDER = "INBOX"  # move behind a label/folder filter once alerts are live
 
 
-def _body_text(msg: Message) -> str:
+def _part_text(msg: Message, content_type: str) -> str:
     if msg.is_multipart():
-        parts = [p.get_payload(decode=True) for p in msg.walk() if p.get_content_type() == "text/plain"]
+        parts = [p.get_payload(decode=True) for p in msg.walk() if p.get_content_type() == content_type]
         return "\n".join(p.decode(errors="replace") for p in parts if p)
+    if msg.get_content_type() != content_type:
+        return ""
     payload = msg.get_payload(decode=True)
     return payload.decode(errors="replace") if payload else ""
 
 
-def parse_pararius(subject: str, body: str) -> Optional[Listing]:
+def _body_text(msg: Message) -> str:
+    return _part_text(msg, "text/plain")
+
+
+IMAGE_URL_RE = re.compile(r'https?://[^\s"\'<>]+\.(?:jpg|jpeg|png|webp)', re.I)
+IMAGE_SKIP_WORDS = ("logo", "icon", "pixel", "spacer", "tracking")
+
+
+def extract_image_urls(html: str, limit: int = 5) -> list:
+    urls = []
+    for url in IMAGE_URL_RE.findall(html):
+        if any(skip in url.lower() for skip in IMAGE_SKIP_WORDS):
+            continue
+        if url not in urls:
+            urls.append(url)
+        if len(urls) >= limit:
+            break
+    return urls
+
+
+def parse_pararius(subject: str, body: str, html: str = "") -> Optional[Listing]:
     url_m = re.search(r"https?://www\.pararius\.nl/\S+", body)
     addr_m = re.search(r"^(.*?),\s*(.+)$", subject.strip())
     rent_m = re.search(r"€\s?([\d.,]+)\s*(?:per maand|p/m|kale huur)", body, re.I)
@@ -44,10 +66,12 @@ def parse_pararius(subject: str, body: str) -> Optional[Listing]:
         city=addr_m.group(2).strip(),
         rent=float(rent_m.group(1).replace(".", "").replace(",", ".")),
         size_m2=float(size_m.group(1)) if size_m else None,
+        description=body,
+        image_urls=extract_image_urls(html),
     )
 
 
-def parse_funda(subject: str, body: str) -> Optional[Listing]:
+def parse_funda(subject: str, body: str, html: str = "") -> Optional[Listing]:
     url_m = re.search(r"https?://www\.funda\.nl/\S+", body)
     addr_m = re.search(r"^(.*?),\s*(.+)$", subject.strip())
     rent_m = re.search(r"€\s?([\d.,]+)\s*(?:per maand|p/m|kosten koper)?", body, re.I)
@@ -62,6 +86,8 @@ def parse_funda(subject: str, body: str) -> Optional[Listing]:
         city=addr_m.group(2).strip(),
         rent=float(rent_m.group(1).replace(".", "").replace(",", ".")),
         size_m2=float(size_m.group(1)) if size_m else None,
+        description=body,
+        image_urls=extract_image_urls(html),
     )
 
 
@@ -93,7 +119,7 @@ def fetch_new_alert_emails() -> list[Listing]:
         source = _source_for(msg.get("From", ""))
         if source is None:
             continue
-        listing = PARSERS[source](msg.get("Subject", ""), _body_text(msg))
+        listing = PARSERS[source](msg.get("Subject", ""), _body_text(msg), _part_text(msg, "text/html"))
         if listing is not None:
             listings.append(listing)
 

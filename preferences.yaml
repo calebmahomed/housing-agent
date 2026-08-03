@@ -5,3 +5,12 @@ cities:
 annual_income: 55000
 income_to_rent_ratio: 3  # landlords typically require gross monthly income >= 3x rent
 min_bedrooms: 2
+exclude_phrases:
+  - "55+"
+  - "55-plus"
+  - "alleen studenten"
+  - "student only"
+  - "students only"
+  - "geschikt voor één persoon"
+  - "geschikt voor 1 persoon"
+  - "suitable for one person"

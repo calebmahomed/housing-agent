@@ -15,6 +15,8 @@ class Listing:
     size_m2: Optional[float] = None
     bedrooms: Optional[int] = None
     posted_at: Optional[datetime] = None
+    description: str = ""
+    image_urls: list = field(default_factory=list)
     raw: dict = field(default_factory=dict)
 
     @property

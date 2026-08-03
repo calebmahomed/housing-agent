@@ -4,7 +4,7 @@ from .commute import commute_highlight
 from .dedup import is_duplicate
 from .filters import passes_hard_filters
 from .ingest import fetch_new_alert_emails
-from .notify import format_listing, send_telegram
+from .notify import format_listing, send_notification
 from .quiet_hours import in_quiet_hours
 from .state import load, save
 
@@ -27,13 +27,13 @@ def main() -> None:
             continue
         seen.append(listing.to_seen_record())
         commute = commute_highlight(f"{listing.address}, {listing.city}")
-        to_notify.append(format_listing(listing, commute))
+        to_notify.append({"caption": format_listing(listing, commute), "image_urls": listing.image_urls})
 
     if in_quiet_hours():
         save(QUEUED_PATH, to_notify)
     else:
-        for text in to_notify:
-            send_telegram(text)
+        for item in to_notify:
+            send_notification(item["caption"], item["image_urls"])
         save(QUEUED_PATH, [])
 
     save(SEEN_PATH, seen)
