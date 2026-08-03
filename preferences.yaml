@@ -2,5 +2,6 @@ cities:
   - Den Haag
   - Delft
   - Rotterdam
-max_total_monthly: 1500
+annual_income: 55000
+income_to_rent_ratio: 3  # landlords typically require gross monthly income >= 3x rent
 min_bedrooms: 2

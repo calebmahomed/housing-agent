@@ -1,22 +1,24 @@
-"""One-off Telegram delivery test. Not part of the poll pipeline."""
+"""One-off Telegram delivery test, with a real Routes API commute lookup
+against a fake listing. Not part of the poll pipeline."""
 
-from .notify import send_telegram
+from .commute import commute_highlight
+from .listing import Listing
+from .notify import format_listing, send_telegram
 
-INTRO = "Hi Caleb, merhaba Selin \U0001F44B\nHousing bot is wired up and can reach this group."
-
-EXAMPLE_LISTING = """\
-\U0001F534 CRITICAL — match 92/100
-
-Prinsegracht 12, Den Haag
-€1,950/mo · 75m² · 3 rooms
-
-✨ Highlights: balcony, 5 min to station, quiet street
-⚠️ Watch out: ground floor
-
-Live 12 min ago · 2 responses so far
-https://www.pararius.nl/huurwoning/den-haag/abc123/prinsegracht-12
-"""
+FAKE_LISTING = Listing(
+    source="pararius",
+    external_id="abc123",
+    url="https://www.pararius.nl/huurwoning/den-haag/abc123/prinsegracht-12",
+    address="Prinsegracht 12",
+    city="Den Haag",
+    rent=1450,
+    service_costs=75,
+    size_m2=75,
+    bedrooms=3,
+)
 
 if __name__ == "__main__":
-    send_telegram(INTRO)
-    send_telegram(EXAMPLE_LISTING)
+    send_telegram("Hi Caleb, merhaba Selin \U0001F44B\nTesting the Routes API commute lookup with a fake listing.")
+
+    commute = commute_highlight(f"{FAKE_LISTING.address}, {FAKE_LISTING.city}")
+    send_telegram(format_listing(FAKE_LISTING, commute))

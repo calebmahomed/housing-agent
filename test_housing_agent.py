@@ -10,7 +10,7 @@ from housing_agent.ingest import parse_funda, parse_pararius
 from housing_agent.listing import Listing
 from housing_agent.quiet_hours import in_quiet_hours
 
-PREFS = {"cities": ["Den Haag", "Delft"], "max_total_monthly": 1500, "min_bedrooms": 2}
+PREFS = {"cities": ["Den Haag", "Delft"], "annual_income": 55000, "income_to_rent_ratio": 3, "min_bedrooms": 2}
 
 
 def load_fixture(name: str) -> tuple[str, str]:
