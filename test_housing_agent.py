@@ -27,14 +27,32 @@ def load_fixture(name: str) -> tuple[str, str]:
 
 
 def test_parse_pararius():
+    # fixture is a real captured Pararius+ alert email (2026-08-04)
     subject, body = load_fixture("pararius_alert.txt")
-    listing = parse_pararius(subject, body)
+    html = Path("fixtures", "pararius_alert.html").read_text()
+    listing = parse_pararius(subject, body, html)
     assert listing is not None
-    assert listing.address == "Prinsegracht 12"
-    assert listing.city == "Den Haag"
-    assert listing.rent == 1950.0
-    assert listing.size_m2 == 75.0
+    assert listing.address == "Rokin"
+    assert listing.city == "Amsterdam"
+    assert listing.rent == 1301.0
+    assert listing.size_m2 == 50.0
+    assert listing.bedrooms == 1
     assert "pararius.nl" in listing.url
+    assert listing.image_urls == ["https://casco-media-prod.global.ssl.fastly.net/photo/22d538909e9d77dfea0bc780435d5242.jpg"]
+
+
+def test_parse_pararius_survives_forward_encoding_corruption():
+    # a manual Outlook forward regenerates the body from HTML and mangles
+    # €/²/· into U+FFFD — verified against a real forwarded copy (2026-08-04)
+    subject = "Fw: Just found for you: €1,495 per month, Godetiaweg in Den Haag"  # subject header survives forwarding intact
+    html = Path("fixtures", "pararius_alert_forwarded.html").read_text()
+    listing = parse_pararius(subject, "", html)
+    assert listing is not None
+    assert listing.address == "Godetiaweg"
+    assert listing.city == "Den Haag"
+    assert listing.rent == 1495.0
+    assert listing.size_m2 == 66.0
+    assert listing.bedrooms == 1
 
 
 def test_parse_funda():
