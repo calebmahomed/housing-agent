@@ -1,4 +1,5 @@
 import os
+from html import escape
 from typing import Optional
 
 import requests
@@ -9,9 +10,10 @@ TELEGRAM_API = "https://api.telegram.org/bot{token}/{method}"
 
 
 def format_listing(listing: Listing, commute: Optional[str] = None) -> str:
-    text = f"{listing.address}, {listing.city} — €{listing.total_monthly:.0f}/mo\n{listing.url}"
+    address = escape(f"{listing.address}, {listing.city}")
+    text = f'<a href="{escape(listing.url)}">{address}</a> — €{listing.total_monthly:.0f}/mo'
     if commute:
-        text += f"\n{commute}"
+        text += f"\n{escape(commute)}"
     return text
 
 
@@ -25,7 +27,7 @@ def _post(method: str, payload: dict) -> bool:
 
 def send_telegram(text: str) -> None:
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
-    _post("sendMessage", {"chat_id": chat_id, "text": text, "disable_web_page_preview": True})
+    _post("sendMessage", {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True})
 
 
 def send_notification(caption: str, image_urls: Optional[list] = None) -> None:
@@ -39,9 +41,12 @@ def send_notification(caption: str, image_urls: Optional[list] = None) -> None:
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
     urls = image_urls[:10]  # Telegram's sendMediaGroup limit
     if len(urls) == 1:
-        ok = _post("sendPhoto", {"chat_id": chat_id, "photo": urls[0], "caption": caption})
+        ok = _post("sendPhoto", {"chat_id": chat_id, "photo": urls[0], "caption": caption, "parse_mode": "HTML"})
     else:
-        media = [{"type": "photo", "media": url, **({"caption": caption} if i == 0 else {})} for i, url in enumerate(urls)]
+        media = [
+            {"type": "photo", "media": url, **({"caption": caption, "parse_mode": "HTML"} if i == 0 else {})}
+            for i, url in enumerate(urls)
+        ]
         ok = _post("sendMediaGroup", {"chat_id": chat_id, "media": media})
 
     if not ok:
