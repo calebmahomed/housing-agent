@@ -26,7 +26,7 @@ cities:
   - Dordrecht
 annual_income: 55000
 income_to_rent_ratio: 3  # landlords typically require gross monthly income >= 3x rent
-min_bedrooms: 2
+min_bedrooms: 1
 exclude_phrases:
   - "55+"
   - "55-plus"
