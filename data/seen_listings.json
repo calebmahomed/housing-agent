@@ -103,5 +103,12 @@
     "size_m2": 66.0,
     "source": "pararius",
     "total_monthly": 1495.0
+  },
+  {
+    "address": "Koornmarkt",
+    "external_id": "88180760bf8e",
+    "size_m2": 73.0,
+    "source": "pararius",
+    "total_monthly": 1350.0
   }
 ]
