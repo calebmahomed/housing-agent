@@ -11,8 +11,10 @@ import hashlib
 import imaplib
 import os
 import re
+from datetime import datetime, timedelta, timezone
 from email.header import decode_header
 from email.message import Message
+from email.utils import parsedate_to_datetime
 from typing import Optional
 
 from .listing import Listing
@@ -144,6 +146,15 @@ def _source_for(from_addr: str, body: str = "") -> Optional[str]:
     return None
 
 
+def _parse_message(msg: Message) -> Optional[Listing]:
+    body = _body_text(msg)
+    source = _source_for(msg.get("From", ""), body)
+    if source is None:
+        return None
+    subject = _decode_subject(msg.get("Subject", ""))
+    return PARSERS[source](subject, body, _part_text(msg, "text/html"))
+
+
 def fetch_new_alert_emails() -> list[Listing]:
     """Connect over IMAP, read unseen mail, parse into Listings, mark seen."""
     conn = imaplib.IMAP4_SSL(os.environ[IMAP_HOST])
@@ -155,12 +166,37 @@ def fetch_new_alert_emails() -> list[Listing]:
     for num in data[0].split():
         _, msg_data = conn.fetch(num, "(RFC822)")
         msg = email.message_from_bytes(msg_data[0][1])
-        body = _body_text(msg)
-        source = _source_for(msg.get("From", ""), body)
-        if source is None:
+        listing = _parse_message(msg)
+        if listing is not None:
+            listings.append(listing)
+
+    conn.close()
+    conn.logout()
+    return listings
+
+
+def fetch_recent_alert_emails(hours: int = 12) -> list[Listing]:
+    """Re-scans ALL mail from the last `hours` (not just unseen) and doesn't
+    touch the \\Seen flag (BODY.PEEK). Recovery path for when a run's IMAP
+    fetch already consumed (marked \\Seen) some emails but its state commit
+    then failed to persist — fetch_new_alert_emails() alone can never see
+    those messages again since IMAP has no "undo seen"."""
+    conn = imaplib.IMAP4_SSL(os.environ[IMAP_HOST])
+    conn.login(os.environ[IMAP_USER], os.environ[IMAP_PASSWORD])
+    conn.select(IMAP_FOLDER)
+
+    since_date = (datetime.now(timezone.utc) - timedelta(hours=hours)).strftime("%d-%b-%Y")
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
+
+    _, data = conn.search(None, f'(SINCE "{since_date}")')
+    listings = []
+    for num in data[0].split():
+        _, msg_data = conn.fetch(num, "(BODY.PEEK[])")
+        msg = email.message_from_bytes(msg_data[0][1])
+        msg_date = parsedate_to_datetime(msg.get("Date"))
+        if msg_date is None or msg_date < cutoff:
             continue
-        subject = _decode_subject(msg.get("Subject", ""))
-        listing = PARSERS[source](subject, body, _part_text(msg, "text/html"))
+        listing = _parse_message(msg)
         if listing is not None:
             listings.append(listing)
 

@@ -1,0 +1,51 @@
+name: catchup
+
+on:
+  workflow_dispatch:
+    inputs:
+      hours:
+        description: "How many hours back to re-scan"
+        default: "12"
+
+concurrency:
+  group: poll-listings
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  catchup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - run: python -m housing_agent.catchup "${{ inputs.hours }}"
+        env:
+          IMAP_HOST: ${{ secrets.IMAP_HOST }}
+          IMAP_USER: ${{ secrets.IMAP_USER }}
+          IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GOOGLE_ROUTES_API_KEY: ${{ secrets.GOOGLE_ROUTES_API_KEY }}
+
+      - run: |
+          git config user.name "housing-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet && exit 0
+          git commit -m "update state from catchup [skip ci]"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            echo "push rejected, retrying ($i)..."
+            git pull --rebase
+            sleep $((RANDOM % 5 + 1))
+          done
+          echo "::error::failed to push state after retries"
+          exit 1

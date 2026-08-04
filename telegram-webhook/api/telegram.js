@@ -1,6 +1,7 @@
 const HELP_TEXT =
   "Commands:\n" +
   "/run — check for new listings right now, instead of waiting for the next automatic run\n" +
+  "/catchup [hours] — re-scan mail from the last N hours (default 12) for anything not yet sent\n" +
   "/help — show this message";
 
 async function reply(text) {
@@ -12,16 +13,16 @@ async function reply(text) {
   console.log("sendMessage status", resp.status, await resp.text());
 }
 
-async function triggerPollRun() {
+async function triggerWorkflow(workflowFile, inputs) {
   const resp = await fetch(
-    `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/poll.yml/dispatches`,
+    `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${workflowFile}/dispatches`,
     {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.GH_PAT}`,
         Accept: "application/vnd.github+json",
       },
-      body: JSON.stringify({ ref: "main" }),
+      body: JSON.stringify({ ref: "main", inputs }),
     }
   );
   console.log("dispatch status", resp.status, await resp.text());
@@ -49,12 +50,18 @@ export default async function handler(req, res) {
     return;
   }
 
-  const command = (message.text || "").trim().split("@")[0]; // strip "@BotName" used in groups
-  console.log("command", JSON.stringify(command));
+  const text = (message.text || "").trim();
+  const [rawCommand, ...args] = text.split(/\s+/);
+  const command = rawCommand.split("@")[0]; // strip "@BotName" used in groups
+  console.log("command", JSON.stringify(command), "args", args);
 
   if (command === "/run") {
-    await triggerPollRun();
+    await triggerWorkflow("poll.yml", {});
     await reply("On it — checking for new listings now.");
+  } else if (command === "/catchup") {
+    const hours = args[0] && /^\d+$/.test(args[0]) ? args[0] : "12";
+    await triggerWorkflow("catchup.yml", { hours });
+    await reply(`On it — re-scanning the last ${hours}h for anything not yet sent.`);
   } else if (command === "/help") {
     await reply(HELP_TEXT);
   } else {
