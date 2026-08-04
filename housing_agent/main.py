@@ -2,6 +2,7 @@ import yaml
 
 from .commute import commute_highlight
 from .dedup import is_duplicate
+from .detail_check import passes_detail_page_check
 from .filters import passes_hard_filters
 from .ingest import fetch_new_alert_emails
 from .notify import format_listing, send_notification
@@ -26,6 +27,8 @@ def main() -> None:
         if is_duplicate(listing, seen):
             continue
         seen.append(listing.to_seen_record())
+        if not passes_detail_page_check(listing.url, prefs.get("exclude_phrases", [])):
+            continue
         commute = commute_highlight(f"{listing.address}, {listing.city}")
         to_notify.append({"caption": format_listing(listing, commute), "image_urls": listing.image_urls})
 

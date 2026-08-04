@@ -5,6 +5,7 @@ from pathlib import Path
 
 from housing_agent.commute import _parse_duration_seconds, format_minutes
 from housing_agent.dedup import is_duplicate
+from housing_agent.detail_check import _contains_excluded_phrase
 from housing_agent.filters import passes_hard_filters
 from housing_agent.ingest import _source_for, extract_image_urls, parse_funda, parse_pararius
 from housing_agent.listing import Listing
@@ -105,6 +106,11 @@ def test_source_for_falls_back_to_body_when_from_header_is_forwarder():
     # a manually forwarded email rewrites From to the forwarder's own address
     assert _source_for("caleb@fastmail.com", body="check out https://www.pararius.nl/x") == "pararius"
     assert _source_for("caleb@fastmail.com", body="no relevant links here") is None
+
+
+def test_contains_excluded_phrase_case_insensitive():
+    assert _contains_excluded_phrase("Only for STUDENTS, min 1 year lease", ["students"])
+    assert not _contains_excluded_phrase("Great apartment, no restrictions", ["students"])
 
 
 def test_parse_duration_seconds():
