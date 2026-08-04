@@ -1,1 +1,107 @@
-[]
+[
+  {
+    "address": "Landbouwstraat",
+    "external_id": "76cd49d6f0ea",
+    "size_m2": 65.0,
+    "source": "pararius",
+    "total_monthly": 1228.0
+  },
+  {
+    "address": "Burgemeester\r\n van Karnebeeklaan",
+    "external_id": "f18944a5bbe9",
+    "size_m2": 35.0,
+    "source": "pararius",
+    "total_monthly": 1199.0
+  },
+  {
+    "address": "Rijn\r\n en Schiekade",
+    "external_id": "7088815929c8",
+    "size_m2": 62.0,
+    "source": "pararius",
+    "total_monthly": 1450.0
+  },
+  {
+    "address": "Eendrachtlaan",
+    "external_id": "892597f03e42",
+    "size_m2": 49.0,
+    "source": "pararius",
+    "total_monthly": 950.0
+  },
+  {
+    "address": "Hoge\r\n Filterweg",
+    "external_id": "2353fa8e4df2",
+    "size_m2": 84.0,
+    "source": "pararius",
+    "total_monthly": 1083.0
+  },
+  {
+    "address": "Melkwegstraat",
+    "external_id": "877d7ab36395",
+    "size_m2": 60.0,
+    "source": "pararius",
+    "total_monthly": 1174.0
+  },
+  {
+    "address": "Melkwegstraat",
+    "external_id": "af3a67d0ab64",
+    "size_m2": 83.0,
+    "source": "pararius",
+    "total_monthly": 1465.0
+  },
+  {
+    "address": "Duifjessteeg",
+    "external_id": "ae24203c783c",
+    "size_m2": 73.0,
+    "source": "pararius",
+    "total_monthly": 1056.0
+  },
+  {
+    "address": "Radarweg",
+    "external_id": "142d206968e8",
+    "size_m2": 42.0,
+    "source": "pararius",
+    "total_monthly": 1365.0
+  },
+  {
+    "address": "Spoorsingel",
+    "external_id": "39c47db3ab8f",
+    "size_m2": 35.0,
+    "source": "pararius",
+    "total_monthly": 1093.0
+  },
+  {
+    "address": "Oudenoord",
+    "external_id": "bc68e62baf00",
+    "size_m2": 54.0,
+    "source": "pararius",
+    "total_monthly": 1180.0
+  },
+  {
+    "address": "Bruggensingel-Zuid",
+    "external_id": "a5a9dcc0295b",
+    "size_m2": 98.0,
+    "source": "pararius",
+    "total_monthly": 1360.0
+  },
+  {
+    "address": "Martinus\r\n Nijhofflaan",
+    "external_id": "27c76a4bc315",
+    "size_m2": 57.0,
+    "source": "pararius",
+    "total_monthly": 1495.0
+  },
+  {
+    "address": "Backershagen",
+    "external_id": "439784a9a73f",
+    "size_m2": 94.0,
+    "source": "pararius",
+    "total_monthly": 1235.0
+  },
+  {
+    "address": "Godetiaweg",
+    "external_id": "485c5de45f4a",
+    "size_m2": 66.0,
+    "source": "pararius",
+    "total_monthly": 1495.0
+  }
+]
