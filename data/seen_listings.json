@@ -110,5 +110,12 @@
     "size_m2": 73.0,
     "source": "pararius",
     "total_monthly": 1350.0
+  },
+  {
+    "address": "Palembangweg",
+    "external_id": "5d5541faa3c6",
+    "size_m2": 85.0,
+    "source": "pararius",
+    "total_monthly": 1245.0
   }
 ]
