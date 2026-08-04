@@ -97,10 +97,14 @@ PARSERS = {
 }
 
 
-def _source_for(from_addr: str) -> Optional[str]:
-    if "pararius" in from_addr.lower():
+def _source_for(from_addr: str, body: str = "") -> Optional[str]:
+    """Prefer the From header, but fall back to a body URL match — a manually
+    forwarded email (vs. a true mail-flow auto-forward) rewrites From to the
+    forwarder's own address, so the original sender is gone from the headers."""
+    haystack = from_addr.lower() + "\n" + body.lower()
+    if "pararius" in haystack:
         return "pararius"
-    if "funda" in from_addr.lower():
+    if "funda" in haystack:
         return "funda"
     return None
 
@@ -116,10 +120,11 @@ def fetch_new_alert_emails() -> list[Listing]:
     for num in data[0].split():
         _, msg_data = conn.fetch(num, "(RFC822)")
         msg = email.message_from_bytes(msg_data[0][1])
-        source = _source_for(msg.get("From", ""))
+        body = _body_text(msg)
+        source = _source_for(msg.get("From", ""), body)
         if source is None:
             continue
-        listing = PARSERS[source](msg.get("Subject", ""), _body_text(msg), _part_text(msg, "text/html"))
+        listing = PARSERS[source](msg.get("Subject", ""), body, _part_text(msg, "text/html"))
         if listing is not None:
             listings.append(listing)
 

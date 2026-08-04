@@ -6,7 +6,7 @@ from pathlib import Path
 from housing_agent.commute import _parse_duration_seconds, format_minutes
 from housing_agent.dedup import is_duplicate
 from housing_agent.filters import passes_hard_filters
-from housing_agent.ingest import extract_image_urls, parse_funda, parse_pararius
+from housing_agent.ingest import _source_for, extract_image_urls, parse_funda, parse_pararius
 from housing_agent.listing import Listing
 from housing_agent.quiet_hours import in_quiet_hours
 
@@ -81,6 +81,12 @@ def test_extract_image_urls_skips_logos():
         '<img src="https://cdn.example.com/photos/kitchen.jpg">'
     )
     assert extract_image_urls(html) == ["https://cdn.example.com/photos/kitchen.jpg"]
+
+
+def test_source_for_falls_back_to_body_when_from_header_is_forwarder():
+    # a manually forwarded email rewrites From to the forwarder's own address
+    assert _source_for("caleb@fastmail.com", body="check out https://www.pararius.nl/x") == "pararius"
+    assert _source_for("caleb@fastmail.com", body="no relevant links here") is None
 
 
 def test_parse_duration_seconds():
