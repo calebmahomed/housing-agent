@@ -4,15 +4,16 @@ const HELP_TEXT =
   "/help — show this message";
 
 async function reply(text) {
-  await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+  const resp = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ chat_id: process.env.TELEGRAM_CHAT_ID, text }),
   });
+  console.log("sendMessage status", resp.status, await resp.text());
 }
 
 async function triggerPollRun() {
-  await fetch(
+  const resp = await fetch(
     `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/poll.yml/dispatches`,
     {
       method: "POST",
@@ -23,6 +24,7 @@ async function triggerPollRun() {
       body: JSON.stringify({ ref: "main" }),
     }
   );
+  console.log("dispatch status", resp.status, await resp.text());
 }
 
 export default async function handler(req, res) {
@@ -31,19 +33,32 @@ export default async function handler(req, res) {
     return;
   }
 
+  console.log("body", JSON.stringify(req.body));
+
   const message = req.body?.message || req.body?.channel_post;
-  if (!message || String(message.chat?.id) !== String(process.env.TELEGRAM_CHAT_ID)) {
+  if (!message) {
+    console.log("no message/channel_post on update");
+    res.status(200).send("ignored");
+    return;
+  }
+
+  console.log("chat.id", message.chat?.id, "expected", process.env.TELEGRAM_CHAT_ID);
+  if (String(message.chat?.id) !== String(process.env.TELEGRAM_CHAT_ID)) {
+    console.log("chat id mismatch, ignoring");
     res.status(200).send("ignored");
     return;
   }
 
   const command = (message.text || "").trim().split("@")[0]; // strip "@BotName" used in groups
+  console.log("command", JSON.stringify(command));
 
   if (command === "/run") {
     await triggerPollRun();
     await reply("On it — checking for new listings now.");
   } else if (command === "/help") {
     await reply(HELP_TEXT);
+  } else {
+    console.log("unrecognized command, no action");
   }
 
   res.status(200).send("ok");

@@ -15,9 +15,12 @@ def format_listing(listing: Listing, commute: Optional[str] = None) -> str:
     return text
 
 
-def _post(method: str, payload: dict) -> None:
+def _post(method: str, payload: dict) -> bool:
     token = os.environ["TELEGRAM_BOT_TOKEN"]
-    requests.post(TELEGRAM_API.format(token=token, method=method), json=payload, timeout=10)
+    resp = requests.post(TELEGRAM_API.format(token=token, method=method), json=payload, timeout=10)
+    if not resp.ok:
+        print(f"Telegram {method} failed: {resp.status_code} {resp.text}")
+    return resp.ok
 
 
 def send_telegram(text: str) -> None:
@@ -26,7 +29,9 @@ def send_telegram(text: str) -> None:
 
 
 def send_notification(caption: str, image_urls: Optional[list] = None) -> None:
-    """Plain text if there are no images; a photo (or album) with caption otherwise."""
+    """Plain text if there are no images; a photo (or album) with caption otherwise.
+    Falls back to plain text if the photo/album send fails, so a bad image URL
+    never silently drops the whole listing."""
     if not image_urls:
         send_telegram(caption)
         return
@@ -34,8 +39,10 @@ def send_notification(caption: str, image_urls: Optional[list] = None) -> None:
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
     urls = image_urls[:10]  # Telegram's sendMediaGroup limit
     if len(urls) == 1:
-        _post("sendPhoto", {"chat_id": chat_id, "photo": urls[0], "caption": caption})
-        return
+        ok = _post("sendPhoto", {"chat_id": chat_id, "photo": urls[0], "caption": caption})
+    else:
+        media = [{"type": "photo", "media": url, **({"caption": caption} if i == 0 else {})} for i, url in enumerate(urls)]
+        ok = _post("sendMediaGroup", {"chat_id": chat_id, "media": media})
 
-    media = [{"type": "photo", "media": url, **({"caption": caption} if i == 0 else {})} for i, url in enumerate(urls)]
-    _post("sendMediaGroup", {"chat_id": chat_id, "media": media})
+    if not ok:
+        send_telegram(caption)
