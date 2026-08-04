@@ -1,3 +1,6 @@
+# saved-search cities, plus every city within ~1h45 transit of work (Singel
+# 542, Amsterdam) per a Routes API check on 2026-08-04 (Nijmegen/Tilburg/
+# Leeuwarden/Groningen/Enschede/Maastricht all exceeded 105 min and are excluded)
 cities:
   - Amsterdam
   - Utrecht
@@ -6,6 +9,21 @@ cities:
   - Zaandam
   - Rotterdam
   - Den Haag
+  - Almere
+  - Lelystad
+  - Hilversum
+  - Amersfoort
+  - Leiden
+  - Gouda
+  - Alkmaar
+  - Hoorn
+  - Zwolle
+  - Apeldoorn
+  - Arnhem
+  - Deventer
+  - Breda
+  - "'s-Hertogenbosch"
+  - Dordrecht
 annual_income: 55000
 income_to_rent_ratio: 3  # landlords typically require gross monthly income >= 3x rent
 min_bedrooms: 2
