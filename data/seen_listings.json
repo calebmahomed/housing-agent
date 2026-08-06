@@ -159,5 +159,26 @@
     "size_m2": 45.0,
     "source": "pararius",
     "total_monthly": 1302.0
+  },
+  {
+    "address": "Pahudstraat",
+    "external_id": "30ac6fe73ef8",
+    "size_m2": 46.0,
+    "source": "pararius",
+    "total_monthly": 1008.0
+  },
+  {
+    "address": "Houtstraat",
+    "external_id": "16b4a8445d9b",
+    "size_m2": 86.0,
+    "source": "pararius",
+    "total_monthly": 1400.0
+  },
+  {
+    "address": "Punter 48",
+    "external_id": "5f74593f31a2",
+    "size_m2": 125.0,
+    "source": "pararius",
+    "total_monthly": 1500.0
   }
 ]
