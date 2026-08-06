@@ -138,5 +138,26 @@
     "size_m2": 54.0,
     "source": "pararius",
     "total_monthly": 975.0
+  },
+  {
+    "address": "Artemisstraat",
+    "external_id": "ea7e50fa117b",
+    "size_m2": 43.0,
+    "source": "pararius",
+    "total_monthly": 1002.0
+  },
+  {
+    "address": "Heathrowstraat",
+    "external_id": "fd8630e86466",
+    "size_m2": 29.0,
+    "source": "pararius",
+    "total_monthly": 1302.0
+  },
+  {
+    "address": "Heathrowstraat",
+    "external_id": "7326489e77ce",
+    "size_m2": 45.0,
+    "source": "pararius",
+    "total_monthly": 1302.0
   }
 ]
