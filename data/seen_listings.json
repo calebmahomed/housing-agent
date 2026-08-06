@@ -117,5 +117,26 @@
     "size_m2": 85.0,
     "source": "pararius",
     "total_monthly": 1245.0
+  },
+  {
+    "address": "Prinses Beatrixlaan",
+    "external_id": "80dd057eb91b",
+    "size_m2": 58.0,
+    "source": "pararius",
+    "total_monthly": 1250.0
+  },
+  {
+    "address": "Schipholweg",
+    "external_id": "33052e036773",
+    "size_m2": 49.0,
+    "source": "pararius",
+    "total_monthly": 1159.0
+  },
+  {
+    "address": "Tussenbusstraat",
+    "external_id": "9feaa6b94dda",
+    "size_m2": 54.0,
+    "source": "pararius",
+    "total_monthly": 975.0
   }
 ]
