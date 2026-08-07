@@ -194,5 +194,12 @@
     "size_m2": 62.0,
     "source": "pararius",
     "total_monthly": 1433.0
+  },
+  {
+    "address": "Delflandplein",
+    "external_id": "67f0c4701880",
+    "size_m2": 42.0,
+    "source": "pararius",
+    "total_monthly": 1020.0
   }
 ]
