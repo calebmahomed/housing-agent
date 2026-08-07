@@ -187,5 +187,12 @@
     "size_m2": 78.0,
     "source": "pararius",
     "total_monthly": 1233.0
+  },
+  {
+    "address": "Lutonhof",
+    "external_id": "6184771006c7",
+    "size_m2": 62.0,
+    "source": "pararius",
+    "total_monthly": 1433.0
   }
 ]
