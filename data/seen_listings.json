@@ -222,5 +222,12 @@
     "size_m2": 60.0,
     "source": "pararius",
     "total_monthly": 1465.0
+  },
+  {
+    "address": "Hickorylaan",
+    "external_id": "0dc39e20e396",
+    "size_m2": 73.0,
+    "source": "pararius",
+    "total_monthly": 1440.0
   }
 ]
