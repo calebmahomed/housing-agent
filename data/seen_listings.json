@@ -180,5 +180,12 @@
     "size_m2": 125.0,
     "source": "pararius",
     "total_monthly": 1500.0
+  },
+  {
+    "address": "Statendaalder",
+    "external_id": "17b8b1cda129",
+    "size_m2": 78.0,
+    "source": "pararius",
+    "total_monthly": 1233.0
   }
 ]
