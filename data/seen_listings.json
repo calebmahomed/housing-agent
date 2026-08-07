@@ -292,5 +292,12 @@
     "size_m2": 65.0,
     "source": "pararius",
     "total_monthly": 1094.0
+  },
+  {
+    "address": "Lindenhoeveweg",
+    "external_id": "d74e70946499",
+    "size_m2": 47.0,
+    "source": "pararius",
+    "total_monthly": 960.0
   }
 ]
