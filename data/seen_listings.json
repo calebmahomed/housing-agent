@@ -201,5 +201,26 @@
     "size_m2": 42.0,
     "source": "pararius",
     "total_monthly": 1020.0
+  },
+  {
+    "address": "Lemmerstraat",
+    "external_id": "ddec76e5812f",
+    "size_m2": 89.0,
+    "source": "pararius",
+    "total_monthly": 1210.0
+  },
+  {
+    "address": "Eendrachtlaan",
+    "external_id": "17da04c2c558",
+    "size_m2": 74.0,
+    "source": "pararius",
+    "total_monthly": 1495.0
+  },
+  {
+    "address": "Carolina MacGillavrylaan",
+    "external_id": "d49add4d07f0",
+    "size_m2": 60.0,
+    "source": "pararius",
+    "total_monthly": 1465.0
   }
 ]
