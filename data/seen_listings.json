@@ -229,5 +229,40 @@
     "size_m2": 73.0,
     "source": "pararius",
     "total_monthly": 1440.0
+  },
+  {
+    "address": "Schipholweg",
+    "external_id": "4125e809cccd",
+    "size_m2": 66.0,
+    "source": "pararius",
+    "total_monthly": 1320.0
+  },
+  {
+    "address": "Schipholweg",
+    "external_id": "51b5892f0090",
+    "size_m2": 64.0,
+    "source": "pararius",
+    "total_monthly": 1450.0
+  },
+  {
+    "address": "Bercylaan",
+    "external_id": "ed97e64bbb70",
+    "size_m2": 77.0,
+    "source": "pararius",
+    "total_monthly": 1199.0
+  },
+  {
+    "address": "Randveen",
+    "external_id": "aa34a1bae29d",
+    "size_m2": 60.0,
+    "source": "pararius",
+    "total_monthly": 1115.0
+  },
+  {
+    "address": "Radarweg",
+    "external_id": "4bb192c323ec",
+    "size_m2": 56.0,
+    "source": "pararius",
+    "total_monthly": 1500.0
   }
 ]
