@@ -264,5 +264,33 @@
     "size_m2": 56.0,
     "source": "pararius",
     "total_monthly": 1500.0
+  },
+  {
+    "address": "Bisschop Tulpijndreef",
+    "external_id": "b05170d78d01",
+    "size_m2": 41.0,
+    "source": "pararius",
+    "total_monthly": 1090.0
+  },
+  {
+    "address": "Gerbrandyhof",
+    "external_id": "95943cee3b08",
+    "size_m2": 65.0,
+    "source": "pararius",
+    "total_monthly": 1303.0
+  },
+  {
+    "address": "Hickorylaan",
+    "external_id": "860daaf0c940",
+    "size_m2": 73.0,
+    "source": "pararius",
+    "total_monthly": 1181.0
+  },
+  {
+    "address": "Statendaalder",
+    "external_id": "1824ba723a8e",
+    "size_m2": 65.0,
+    "source": "pararius",
+    "total_monthly": 1094.0
   }
 ]
