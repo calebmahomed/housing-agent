@@ -299,5 +299,12 @@
     "size_m2": 47.0,
     "source": "pararius",
     "total_monthly": 960.0
+  },
+  {
+    "address": "Bilderdijkstraat",
+    "external_id": "ec15e9f255d9",
+    "size_m2": 44.0,
+    "source": "pararius",
+    "total_monthly": 1030.0
   }
 ]
