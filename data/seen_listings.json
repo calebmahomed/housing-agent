@@ -355,5 +355,12 @@
     "size_m2": 40.0,
     "source": "pararius",
     "total_monthly": 1400.0
+  },
+  {
+    "address": "Vegelinsoord",
+    "external_id": "e02bdd1ac3de",
+    "size_m2": 68.0,
+    "source": "pararius",
+    "total_monthly": 1187.0
   }
 ]
