@@ -341,5 +341,19 @@
     "size_m2": 71.0,
     "source": "pararius",
     "total_monthly": 976.0
+  },
+  {
+    "address": "Karel Doormanstraat",
+    "external_id": "32f9166f691f",
+    "size_m2": 68.0,
+    "source": "pararius",
+    "total_monthly": 1187.0
+  },
+  {
+    "address": "Van Humboldtstraat",
+    "external_id": "618159d56f69",
+    "size_m2": 40.0,
+    "source": "pararius",
+    "total_monthly": 1400.0
   }
 ]
