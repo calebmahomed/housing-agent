@@ -306,5 +306,12 @@
     "size_m2": 44.0,
     "source": "pararius",
     "total_monthly": 1030.0
+  },
+  {
+    "address": "Lange Beestenmarkt",
+    "external_id": "297fafe992fa",
+    "size_m2": 48.0,
+    "source": "pararius",
+    "total_monthly": 1078.0
   }
 ]
