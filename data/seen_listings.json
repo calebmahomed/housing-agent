@@ -313,5 +313,33 @@
     "size_m2": 48.0,
     "source": "pararius",
     "total_monthly": 1078.0
+  },
+  {
+    "address": "Van Oldenbarneveltstraat",
+    "external_id": "1046cf72201d",
+    "size_m2": 90.0,
+    "source": "pararius",
+    "total_monthly": 1399.0
+  },
+  {
+    "address": "Kamp",
+    "external_id": "7ad5ff738f6e",
+    "size_m2": 60.0,
+    "source": "pararius",
+    "total_monthly": 1425.0
+  },
+  {
+    "address": "Treilerweg",
+    "external_id": "b1f70e4c9a83",
+    "size_m2": 37.0,
+    "source": "pararius",
+    "total_monthly": 1002.0
+  },
+  {
+    "address": "Haagweg",
+    "external_id": "59fa5d4d94db",
+    "size_m2": 71.0,
+    "source": "pararius",
+    "total_monthly": 976.0
   }
 ]
