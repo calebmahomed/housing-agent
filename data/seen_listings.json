@@ -390,5 +390,12 @@
     "size_m2": 87.0,
     "source": "pararius",
     "total_monthly": 1350.0
+  },
+  {
+    "address": "mt. Lincolnweg",
+    "external_id": "aff490450035",
+    "size_m2": 51.0,
+    "source": "pararius",
+    "total_monthly": 1425.0
   }
 ]
