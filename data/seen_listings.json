@@ -369,5 +369,12 @@
     "size_m2": 68.0,
     "source": "pararius",
     "total_monthly": 1315.0
+  },
+  {
+    "address": "Laan van Keulen",
+    "external_id": "12e6e9aed02a",
+    "size_m2": 99.0,
+    "source": "pararius",
+    "total_monthly": 1440.0
   }
 ]
