@@ -397,5 +397,12 @@
     "size_m2": 51.0,
     "source": "pararius",
     "total_monthly": 1425.0
+  },
+  {
+    "address": "Roemeni\u00ebstraat",
+    "external_id": "0c6adbcb8efd",
+    "size_m2": 79.0,
+    "source": "pararius",
+    "total_monthly": 1500.0
   }
 ]
