@@ -376,5 +376,19 @@
     "size_m2": 99.0,
     "source": "pararius",
     "total_monthly": 1440.0
+  },
+  {
+    "address": "Rio de Janeiroplein",
+    "external_id": "2b14b44ac80c",
+    "size_m2": 86.0,
+    "source": "pararius",
+    "total_monthly": 1350.0
+  },
+  {
+    "address": "Jansweg",
+    "external_id": "eb7c0901784a",
+    "size_m2": 87.0,
+    "source": "pararius",
+    "total_monthly": 1350.0
   }
 ]
