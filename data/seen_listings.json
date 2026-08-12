@@ -425,5 +425,19 @@
     "size_m2": 59.0,
     "source": "pararius",
     "total_monthly": 1020.0
+  },
+  {
+    "address": "Boutenburg",
+    "external_id": "4759c9e2bbb7",
+    "size_m2": 67.0,
+    "source": "pararius",
+    "total_monthly": 980.0
+  },
+  {
+    "address": "R\u00f6ntgenweg",
+    "external_id": "b9d5a69526e4",
+    "size_m2": 77.0,
+    "source": "pararius",
+    "total_monthly": 1458.0
   }
 ]
