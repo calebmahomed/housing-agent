@@ -411,5 +411,12 @@
     "size_m2": 32.0,
     "source": "pararius",
     "total_monthly": 1118.0
+  },
+  {
+    "address": "Klokpoort",
+    "external_id": "36006dc6a4e7",
+    "size_m2": 91.0,
+    "source": "pararius",
+    "total_monthly": 1247.0
   }
 ]
