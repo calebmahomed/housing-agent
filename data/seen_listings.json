@@ -404,5 +404,12 @@
     "size_m2": 79.0,
     "source": "pararius",
     "total_monthly": 1500.0
+  },
+  {
+    "address": "Amsterdamsestraatweg",
+    "external_id": "f076704dcdcc",
+    "size_m2": 32.0,
+    "source": "pararius",
+    "total_monthly": 1118.0
   }
 ]
