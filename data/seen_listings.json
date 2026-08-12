@@ -418,5 +418,12 @@
     "size_m2": 91.0,
     "source": "pararius",
     "total_monthly": 1247.0
+  },
+  {
+    "address": "Reinkenstraat",
+    "external_id": "f6fad4732588",
+    "size_m2": 59.0,
+    "source": "pararius",
+    "total_monthly": 1020.0
   }
 ]
