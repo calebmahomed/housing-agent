@@ -439,5 +439,12 @@
     "size_m2": 77.0,
     "source": "pararius",
     "total_monthly": 1458.0
+  },
+  {
+    "address": "Gerbrandyhof",
+    "external_id": "4caa067f5c43",
+    "size_m2": 72.0,
+    "source": "pararius",
+    "total_monthly": 1403.0
   }
 ]
