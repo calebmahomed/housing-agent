@@ -446,5 +446,12 @@
     "size_m2": 72.0,
     "source": "pararius",
     "total_monthly": 1403.0
+  },
+  {
+    "address": "Prinses Beatrixlaan",
+    "external_id": "dd59b6954717",
+    "size_m2": 61.0,
+    "source": "pararius",
+    "total_monthly": 1350.0
   }
 ]
