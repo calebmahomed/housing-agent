@@ -453,5 +453,12 @@
     "size_m2": 61.0,
     "source": "pararius",
     "total_monthly": 1350.0
+  },
+  {
+    "address": "Van Leeuwenhoekpark",
+    "external_id": "43b836297a71",
+    "size_m2": 81.0,
+    "source": "pararius",
+    "total_monthly": 1450.0
   }
 ]
