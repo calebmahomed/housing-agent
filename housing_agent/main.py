@@ -5,7 +5,7 @@ import yaml
 
 from .commute import commute_info, within_commute
 from .dedup import is_duplicate
-from .detail_check import contains_excluded_phrase, fetch_page_text
+from .detail_check import contains_exclusion, fetch_page_text
 from .filters import passes_hard_filters
 from .ingest import fetch_new_alert_emails
 from .listing import Listing
@@ -39,7 +39,7 @@ def prepare(listing: Listing, prefs: dict, seen: list, seeding: set = frozenset(
         return None
 
     page_text = fetch_page_text(listing.url)
-    if contains_excluded_phrase(page_text, prefs.get("exclude_phrases", [])):
+    if contains_exclusion(page_text, prefs):
         return None
 
     score = score_listing(listing, page_text, prefs) if page_text else None

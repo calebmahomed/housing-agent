@@ -24,3 +24,14 @@ exclude_phrases:
   - "geschikt voor één persoon"
   - "geschikt voor 1 persoon"
   - "suitable for one person"
+# Regexes, checked against the listing page text as well as the description.
+# Age-restricted complexes are the reason these exist: Vesteda phrases it as
+# "min.leeftijd 50 jaar" / "min. leeftijd 50 jr", which no literal phrase above
+# catches, and the age bound varies by complex (50, 55, 65).
+exclude_patterns:
+  - "min\\.?\\s*leeftijd\\s*\\d{2}"        # min.leeftijd 50 jaar / min. leeftijd 50 jr
+  - "leeftijd\\s*(?:van|vanaf)?\\s*\\d{2}\\s*(?:jaar|jr)\\b"
+  - "vanaf\\s*\\d{2}\\s*(?:jaar|jr)\\b"     # "vanaf 55 jaar"
+  - "\\b(?:50|55|60|65)\\s*[-]?plus(?:sers|ers)?\\b"
+  - "senioren(?:woning|complex|appartement)"
+  - "\\bseniorenwoningen\\b"

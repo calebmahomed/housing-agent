@@ -5,7 +5,9 @@ from pathlib import Path
 
 from housing_agent.commute import _parse_duration_seconds, format_minutes, within_commute
 from housing_agent.dedup import is_duplicate
-from housing_agent.detail_check import _strip_html, contains_excluded_phrase
+import yaml
+
+from housing_agent.detail_check import _strip_html, contains_exclusion, contains_excluded_phrase
 from housing_agent.filters import max_affordable_rent, passes_hard_filters
 from housing_agent.ingest import _source_for, extract_image_urls, parse_funda, parse_pararius
 from housing_agent.listing import Listing
@@ -262,6 +264,25 @@ def test_ikwilhuren_card_respects_age_cutoff():
     # "Sinds 0.818 dagen online" ~= 19.6h, so a 12h window must exclude it
     assert _parse_ikwilhuren_card(IKWILHUREN_CARD, max_age_hours=12) is None
     assert _parse_ikwilhuren_card(IKWILHUREN_CARD, max_age_hours=24) is not None
+
+
+def test_exclusion_catches_real_age_limit_phrasings():
+    # both taken verbatim from Vesteda listing pages that were wrongly alerted on
+    prefs = yaml.safe_load(open("preferences.yaml"))
+    for text in ("De Vesteda woningen (min.leeftijd 50 jaar) zijn gelegen in de Kleurenbuurt",
+                 "min. leeftijd 50 jr, gelegen tegenover winkelcentrum In de Bogaard",
+                 "Dit is een seniorenwoning in een rustig complex",
+                 "Verhuur vanaf 55 jaar",
+                 "Alleen voor 55-plussers"):
+        assert contains_exclusion(text, prefs), text
+
+
+def test_exclusion_does_not_fire_on_ordinary_listing_text():
+    prefs = yaml.safe_load(open("preferences.yaml"))
+    for text in ("Ruim appartement aan de Churchilllaan 55, gebouwd in 1965",
+                 "Woonoppervlakte 55 m2, bouwjaar 1950",
+                 "Op 50 meter van het station"):
+        assert not contains_exclusion(text, prefs), text
 
 
 if __name__ == "__main__":

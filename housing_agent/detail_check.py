@@ -61,3 +61,18 @@ def fetch_page_text(url: str, timeout_ms: int = 20000) -> str:
 def contains_excluded_phrase(text: str, exclude_phrases: list) -> bool:
     lowered = text.lower()
     return any(phrase.lower() in lowered for phrase in exclude_phrases)
+
+
+def contains_exclusion(text: str, prefs: dict) -> bool:
+    """Literal phrases plus regexes.
+
+    Age limits are the reason the regex list exists: Vesteda writes
+    "min.leeftijd 50 jaar" and "min. leeftijd 50 jr", which no substring in
+    exclude_phrases matches, and the bound varies (50, 55, 65). Patterns stay
+    separate from phrases rather than making every phrase a regex — "55+"
+    read as a regex means "5" then one-or-more "5", which would match a house
+    number.
+    """
+    if contains_excluded_phrase(text, prefs.get("exclude_phrases", [])):
+        return True
+    return any(re.search(p, text, re.I) for p in prefs.get("exclude_patterns", []))
