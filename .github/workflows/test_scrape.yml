@@ -1,0 +1,30 @@
+name: test-scrape
+
+on:
+  workflow_dispatch:
+    inputs:
+      hours:
+        description: "How far back to look for newly-added listings"
+        default: "720"
+      limit:
+        description: "Max notifications to send"
+        default: "3"
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: playwright install --with-deps chromium
+
+      # no `permissions: contents: write` and no commit step — this workflow
+      # is read-only by design, so a test send can't consume a real listing
+      - run: python -m housing_agent.test_scrape "${{ inputs.hours }}" "${{ inputs.limit }}"
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GOOGLE_ROUTES_API_KEY: ${{ secrets.GOOGLE_ROUTES_API_KEY }}
