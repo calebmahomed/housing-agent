@@ -460,5 +460,271 @@
     "size_m2": 81.0,
     "source": "pararius",
     "total_monthly": 1450.0
+  },
+  {
+    "address": "Graaf Van Rechterenweg 55 48",
+    "external_id": "12699",
+    "size_m2": 96.0,
+    "source": "vesteda",
+    "total_monthly": 1395.0
+  },
+  {
+    "address": "Ubbemastins 146",
+    "external_id": "16056",
+    "size_m2": 81.0,
+    "source": "vesteda",
+    "total_monthly": 1105.0
+  },
+  {
+    "address": "Ansjovislaan 60",
+    "external_id": "19152",
+    "size_m2": 103.0,
+    "source": "vesteda",
+    "total_monthly": 1385.0
+  },
+  {
+    "address": "Ansjovislaan 83",
+    "external_id": "19158",
+    "size_m2": 103.0,
+    "source": "vesteda",
+    "total_monthly": 1325.0
+  },
+  {
+    "address": "Kluizeweg 148",
+    "external_id": "37767",
+    "size_m2": 80.0,
+    "source": "vesteda",
+    "total_monthly": 1186.84
+  },
+  {
+    "address": "Hulsmaatstraat 29 803",
+    "external_id": "181189",
+    "size_m2": 78.0,
+    "source": "vesteda",
+    "total_monthly": 1365.0
+  },
+  {
+    "address": "Aaltje Noordewierstraat 187 g",
+    "external_id": "181822",
+    "size_m2": 49.0,
+    "source": "vesteda",
+    "total_monthly": 1196.27
+  },
+  {
+    "address": "Sir Winston Churchillln 593",
+    "external_id": "278",
+    "size_m2": 56.0,
+    "source": "vesteda",
+    "total_monthly": 953.45
+  },
+  {
+    "address": "Hilvoordestraat 159",
+    "external_id": "744",
+    "size_m2": 45.0,
+    "source": "vesteda",
+    "total_monthly": 897.75
+  },
+  {
+    "address": "Hilvoordestraat 223",
+    "external_id": "522",
+    "size_m2": 57.0,
+    "source": "vesteda",
+    "total_monthly": 913.5
+  },
+  {
+    "address": "Willem Barentszstraat 113",
+    "external_id": "37513",
+    "size_m2": 67.0,
+    "source": "vesteda",
+    "total_monthly": 1193.76
+  },
+  {
+    "address": "Anna Paulownahof 156",
+    "external_id": "2928",
+    "size_m2": 69.0,
+    "source": "vesteda",
+    "total_monthly": 1145.69
+  },
+  {
+    "address": "Anna Paulownahof 217",
+    "external_id": "5440",
+    "size_m2": 69.0,
+    "source": "vesteda",
+    "total_monthly": 1070.14
+  },
+  {
+    "address": "Anna Paulownahof 11",
+    "external_id": "2618",
+    "size_m2": 67.0,
+    "source": "vesteda",
+    "total_monthly": 1097.61
+  },
+  {
+    "address": "Anna Paulownahof 63",
+    "external_id": "3093",
+    "size_m2": 88.0,
+    "source": "vesteda",
+    "total_monthly": 1199.0
+  },
+  {
+    "address": "Heerderweg 56 H",
+    "external_id": "15175",
+    "size_m2": 67.0,
+    "source": "vesteda",
+    "total_monthly": 1175.0
+  },
+  {
+    "address": "Heerderweg 86 N",
+    "external_id": "15213",
+    "size_m2": 58.0,
+    "source": "vesteda",
+    "total_monthly": 1095.0
+  },
+  {
+    "address": "Heerderweg 66 P",
+    "external_id": "15187",
+    "size_m2": 58.0,
+    "source": "vesteda",
+    "total_monthly": 1070.14
+  },
+  {
+    "address": "Heerderweg 72 K",
+    "external_id": "15026",
+    "size_m2": 98.0,
+    "source": "vesteda",
+    "total_monthly": 1390.0
+  },
+  {
+    "address": "Heerderweg 62 E",
+    "external_id": "15011",
+    "size_m2": 74.0,
+    "source": "vesteda",
+    "total_monthly": 1325.0
+  },
+  {
+    "address": "Julianaplein 10 E",
+    "external_id": "7895",
+    "size_m2": 45.0,
+    "source": "vesteda",
+    "total_monthly": 1280.0
+  },
+  {
+    "address": "Steenhouwerskade 125",
+    "external_id": "20075",
+    "size_m2": 84.0,
+    "source": "vesteda",
+    "total_monthly": 1186.84
+  },
+  {
+    "address": "Eelkemastraat 275",
+    "external_id": "32840",
+    "size_m2": 68.0,
+    "source": "vesteda",
+    "total_monthly": 1214.31
+  },
+  {
+    "address": "Toxopeusstraat 152",
+    "external_id": "50383",
+    "size_m2": 66.0,
+    "source": "vesteda",
+    "total_monthly": 1395.0
+  },
+  {
+    "address": "Toxopeusstraat 176",
+    "external_id": "50395",
+    "size_m2": 49.0,
+    "source": "vesteda",
+    "total_monthly": 1180.01
+  },
+  {
+    "address": "Kouwenaardseweg 53",
+    "external_id": "15574",
+    "size_m2": 103.0,
+    "source": "vesteda",
+    "total_monthly": 1345.0
+  },
+  {
+    "address": "Strevelsweg 825",
+    "external_id": "11482",
+    "size_m2": 96.0,
+    "source": "vesteda",
+    "total_monthly": 1355.0
+  },
+  {
+    "address": "Albertina Sisulupad 172",
+    "external_id": "148304",
+    "size_m2": 52.0,
+    "source": "vesteda",
+    "total_monthly": 1166.27
+  },
+  {
+    "address": "Oostersingel 74 G",
+    "external_id": "leeuwarden-8921gb-74-g-oostersingel-c13ee24636d21e4a0b06a22033bd9137",
+    "size_m2": 100.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1300.0
+  },
+  {
+    "address": "Schorsmolen 27",
+    "external_id": "berkel-enschot-5057ag-27-schorsmolen-88384f05c94676770883e8f681832afb",
+    "size_m2": 123.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1275.0
+  },
+  {
+    "address": "Develstein 550",
+    "external_id": "amsterdam-1102ak-550-develstein-87704c0f278dc14238cdfe004f8551ea",
+    "size_m2": 66.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1194.0
+  },
+  {
+    "address": "Omegaplantsoen 429",
+    "external_id": "leiden-2321kv-429-omegaplantsoen-4bb8cd79f60b946604a536faf9d12261",
+    "size_m2": 48.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1043.0
+  },
+  {
+    "address": "Olga De Haasstraat 281",
+    "external_id": "amsterdam-1095pg-281-olga-de-haasstraat-b0378010787792965de50be6c1056fd1",
+    "size_m2": 50.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1219.0
+  },
+  {
+    "address": "Develstein 308",
+    "external_id": "amsterdam-1102ak-308-develstein-2349e1756a43115bd26d805abbf609d1",
+    "size_m2": 56.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1043.0
+  },
+  {
+    "address": "Olga De Haasstraat 259",
+    "external_id": "amsterdam-1095pg-259-olga-de-haasstraat-bcf7b967ff610ffc31e487b30a0e442c",
+    "size_m2": 48.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1214.0
+  },
+  {
+    "address": "Olga De Haasstraat 423",
+    "external_id": "amsterdam-1095pg-423-olga-de-haasstraat-1dbc952aeb9d6ca988b1feec8591a12d",
+    "size_m2": 69.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1310.0
+  },
+  {
+    "address": "Nijenoord 185",
+    "external_id": "utrecht-3552as-185-nijenoord-ef3651faa526f2ff416fe6ec8d7b700e",
+    "size_m2": 58.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1207.0
+  },
+  {
+    "address": "Brasem 88",
+    "external_id": "hardenberg-7773er-88-brasem-503954004a4bc00353fdea4c70305b09",
+    "size_m2": 112.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1180.0
   }
 ]
