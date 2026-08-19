@@ -13,7 +13,7 @@ TELEGRAM_API = "https://api.telegram.org/bot{token}/{method}"
 # while by the time their alert lands. Anything else is a makelaar's own site,
 # where we're likely first, so it gets the loud badge.
 AGGREGATORS = {"pararius": "\U0001f535 Pararius", "funda": "\U0001f7e0 Funda"}
-MAKELAAR_NAMES = {"verra": "VERRA Makelaars"}
+MAKELAAR_NAMES = {"verra": "VERRA Makelaars", "estata": "Estata Makelaars"}
 
 
 def source_badge(source: str) -> str:

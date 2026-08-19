@@ -6,12 +6,12 @@ from pathlib import Path
 from housing_agent.commute import _parse_duration_seconds, format_minutes
 from housing_agent.dedup import is_duplicate
 from housing_agent.detail_check import _strip_html, contains_excluded_phrase
-from housing_agent.filters import passes_hard_filters
+from housing_agent.filters import max_affordable_rent, passes_hard_filters
 from housing_agent.ingest import _source_for, extract_image_urls, parse_funda, parse_pararius
 from housing_agent.listing import Listing
 from housing_agent.notify import format_listing
 from housing_agent.quiet_hours import in_quiet_hours
-from housing_agent.scrape import _verra_to_listing
+from housing_agent.scrape import _to_listing
 
 PREFS = {
     "cities": ["Den Haag", "Delft"],
@@ -121,20 +121,23 @@ def test_strip_html_drops_scripts_and_tags():
     assert "alleen studenten" not in text  # script contents must not trip the phrase filter
 
 
-def test_verra_item_maps_to_listing():
-    listing = _verra_to_listing(
+def test_platform_item_maps_to_listing():
+    listing = _to_listing(
         {
             "_id": "abc123",
             "url": "/en/listings/residential/rotterdam/factorij-129/abc123",
             "address": "Factorij 129",
             "city": "Rotterdam",
             "isRentals": True,
+            "mainType": "apartment",
             "rentalsPrice": 2195,
             "price": "&euro; 2.195 p.m. ex.",
             "livingSurface": 107,
             "bedrooms": 3,
             "photo": "https://media02.ogonline.nl/x.jpg",
-        }
+        },
+        "verra",
+        "https://www.verra.nl",
     )
     assert listing.source == "verra"
     assert listing.url.startswith("https://www.verra.nl/en/listings/")
@@ -142,9 +145,19 @@ def test_verra_item_maps_to_listing():
     assert listing.image_urls == ["https://media02.ogonline.nl/x.jpg"]
 
 
-def test_verra_sale_listing_is_skipped():
+def test_platform_sale_listing_is_skipped():
     # sales entries carry rentalsPrice 0 and must never reach the filters
-    assert _verra_to_listing({"_id": "x", "url": "/en/l/x", "isRentals": False, "rentalsPrice": 0}) is None
+    assert _to_listing({"_id": "x", "url": "/en/l/x", "isRentals": False, "rentalsPrice": 0},
+                       "verra", "https://www.verra.nl") is None
+
+
+def test_platform_parking_space_is_skipped():
+    # the feed also rents parking/storage: mainType "other", 0 m2, ~EUR 150 —
+    # cheap enough to clear the rent filter and get alerted on as a home
+    parking = {"_id": "p", "url": "/en/l/p", "address": "Vissersdijk", "city": "Rotterdam",
+               "isRentals": True, "status": "Available", "mainType": "other",
+               "rentalsPrice": 150, "livingSurface": 0, "bedrooms": 0}
+    assert _to_listing(parking, "verra", "https://www.verra.nl") is None
 
 
 def test_format_listing_prefers_llm_total_over_advertised_rent():
@@ -170,6 +183,18 @@ def test_source_badges_distinguish_direct_from_aggregator():
     assert badge("funda") == "\U0001f7e0 Funda"
     # an unmapped scraper still reads as direct rather than silently looking like an aggregator
     assert badge("de_boer") == "\U0001f534 <b>DIRECT — De Boer</b>"
+
+
+def test_max_rent_cap_binds_before_income_cap():
+    # income alone allows EUR 1528/mo; the self-imposed cap is stricter and must win
+    prefs = dict(PREFS, max_rent=1400, min_bedrooms=0)
+    assert max_affordable_rent(prefs) == 1400
+    over = Listing(source="x", external_id="1", url="", address="A", city="Delft", rent=1450)
+    assert not passes_hard_filters(over, prefs)
+    under = Listing(source="x", external_id="2", url="", address="B", city="Delft", rent=1390)
+    assert passes_hard_filters(under, prefs)
+    # with no max_rent set, the income cap still applies as before
+    assert max_affordable_rent(PREFS) == 55000 / 12 / 3
 
 
 def test_format_listing_shows_size_and_bedrooms_when_known():
