@@ -1,16 +1,40 @@
+import itertools
+from typing import Optional
+
 import yaml
 
 from .commute import commute_highlight
 from .dedup import is_duplicate
-from .detail_check import passes_detail_page_check
+from .detail_check import contains_excluded_phrase, fetch_page_text
 from .filters import passes_hard_filters
 from .ingest import fetch_new_alert_emails
+from .listing import Listing
 from .notify import format_listing, send_notification
 from .quiet_hours import in_quiet_hours
+from .scrape import fetch_scraped_listings
+from .score import score_listing
 from .state import load, save
 
 SEEN_PATH = "data/seen_listings.json"
 QUEUED_PATH = "data/queued_listings.json"
+
+
+def prepare(listing: Listing, prefs: dict, seen: list) -> Optional[dict]:
+    """Filter, dedup, enrich. None means don't notify. Mutates `seen`.
+    Shared by the poll run and /catchup so the two can't drift apart."""
+    if not passes_hard_filters(listing, prefs):
+        return None
+    if is_duplicate(listing, seen):
+        return None
+    seen.append(listing.to_seen_record())
+
+    page_text = fetch_page_text(listing.url)
+    if contains_excluded_phrase(page_text, prefs.get("exclude_phrases", [])):
+        return None
+
+    commute = commute_highlight(f"{listing.address}, {listing.city}")
+    score = score_listing(listing, page_text, prefs) if page_text else None
+    return {"caption": format_listing(listing, commute, score), "image_urls": listing.image_urls}
 
 
 def main() -> None:
@@ -21,16 +45,12 @@ def main() -> None:
     queued = load(QUEUED_PATH)
 
     to_notify = list(queued)  # anything queued from a previous quiet-hours run
-    for listing in fetch_new_alert_emails():
-        if not passes_hard_filters(listing, prefs):
-            continue
-        if is_duplicate(listing, seen):
-            continue
-        seen.append(listing.to_seen_record())
-        if not passes_detail_page_check(listing.url, prefs.get("exclude_phrases", [])):
-            continue
-        commute = commute_highlight(f"{listing.address}, {listing.city}")
-        to_notify.append({"caption": format_listing(listing, commute), "image_urls": listing.image_urls})
+    # scraped first: same flat from the makelaar beats the aggregator's copy,
+    # and dedup then suppresses the Pararius/Funda email when it lands.
+    for listing in itertools.chain(fetch_scraped_listings(), fetch_new_alert_emails()):
+        item = prepare(listing, prefs, seen)
+        if item:
+            to_notify.append(item)
 
     if in_quiet_hours():
         save(QUEUED_PATH, to_notify)

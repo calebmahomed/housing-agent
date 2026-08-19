@@ -8,15 +8,10 @@ import sys
 
 import yaml
 
-from .commute import commute_highlight
-from .dedup import is_duplicate
-from .detail_check import passes_detail_page_check
-from .filters import passes_hard_filters
 from .ingest import fetch_recent_alert_emails
-from .notify import format_listing, send_notification
+from .main import SEEN_PATH, prepare
+from .notify import send_notification
 from .state import load, save
-
-SEEN_PATH = "data/seen_listings.json"
 
 
 def run(hours: int = 12) -> int:
@@ -26,16 +21,10 @@ def run(hours: int = 12) -> int:
     seen = load(SEEN_PATH)
     sent = 0
     for listing in fetch_recent_alert_emails(hours):
-        if not passes_hard_filters(listing, prefs):
-            continue
-        if is_duplicate(listing, seen):
-            continue
-        seen.append(listing.to_seen_record())
-        if not passes_detail_page_check(listing.url, prefs.get("exclude_phrases", [])):
-            continue
-        commute = commute_highlight(f"{listing.address}, {listing.city}")
-        send_notification(format_listing(listing, commute), listing.image_urls)
-        sent += 1
+        item = prepare(listing, prefs, seen)
+        if item:
+            send_notification(item["caption"], item["image_urls"])
+            sent += 1
 
     save(SEEN_PATH, seen)
     return sent

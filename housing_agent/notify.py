@@ -9,11 +9,17 @@ from .listing import Listing
 TELEGRAM_API = "https://api.telegram.org/bot{token}/{method}"
 
 
-def format_listing(listing: Listing, commute: Optional[str] = None) -> str:
+def format_listing(listing: Listing, commute: Optional[str] = None, score: Optional[dict] = None) -> str:
     address = escape(f"{listing.address}, {listing.city}")
-    text = f'<a href="{escape(listing.url)}">{address}</a> — €{listing.total_monthly:.0f}/mo'
+    rent = (score or {}).get("total_monthly") or listing.total_monthly
+    basis = {"kale": " excl. servicekosten", "inclusief": " all-in"}.get((score or {}).get("rent_basis"), "")
+    text = f'<a href="{escape(listing.url)}">{address}</a> — €{rent:.0f}/mo{basis}'
+    if listing.source not in ("pararius", "funda"):
+        text += "  🏠 direct from makelaar"
     if commute:
         text += f"\n{escape(commute)}"
+    if score:
+        text += f"\n<b>{score['score']}/10</b> — {escape(score['reason'])}"
     return text
 
 

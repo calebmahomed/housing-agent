@@ -5,11 +5,13 @@ from pathlib import Path
 
 from housing_agent.commute import _parse_duration_seconds, format_minutes
 from housing_agent.dedup import is_duplicate
-from housing_agent.detail_check import _contains_excluded_phrase
+from housing_agent.detail_check import _strip_html, contains_excluded_phrase
 from housing_agent.filters import passes_hard_filters
 from housing_agent.ingest import _source_for, extract_image_urls, parse_funda, parse_pararius
 from housing_agent.listing import Listing
+from housing_agent.notify import format_listing
 from housing_agent.quiet_hours import in_quiet_hours
+from housing_agent.scrape import _verra_to_listing
 
 PREFS = {
     "cities": ["Den Haag", "Delft"],
@@ -109,8 +111,54 @@ def test_source_for_falls_back_to_body_when_from_header_is_forwarder():
 
 
 def test_contains_excluded_phrase_case_insensitive():
-    assert _contains_excluded_phrase("Only for STUDENTS, min 1 year lease", ["students"])
-    assert not _contains_excluded_phrase("Great apartment, no restrictions", ["students"])
+    assert contains_excluded_phrase("Only for STUDENTS, min 1 year lease", ["students"])
+    assert not contains_excluded_phrase("Great apartment, no restrictions", ["students"])
+
+
+def test_strip_html_drops_scripts_and_tags():
+    text = _strip_html("<p>Huur €1.500</p><script>var x = 'alleen studenten';</script>")
+    assert "Huur €1.500" in text
+    assert "alleen studenten" not in text  # script contents must not trip the phrase filter
+
+
+def test_verra_item_maps_to_listing():
+    listing = _verra_to_listing(
+        {
+            "_id": "abc123",
+            "url": "/en/listings/residential/rotterdam/factorij-129/abc123",
+            "address": "Factorij 129",
+            "city": "Rotterdam",
+            "isRentals": True,
+            "rentalsPrice": 2195,
+            "price": "&euro; 2.195 p.m. ex.",
+            "livingSurface": 107,
+            "bedrooms": 3,
+            "photo": "https://media02.ogonline.nl/x.jpg",
+        }
+    )
+    assert listing.source == "verra"
+    assert listing.url.startswith("https://www.verra.nl/en/listings/")
+    assert listing.rent == 2195 and listing.size_m2 == 107 and listing.bedrooms == 3
+    assert listing.image_urls == ["https://media02.ogonline.nl/x.jpg"]
+
+
+def test_verra_sale_listing_is_skipped():
+    # sales entries carry rentalsPrice 0 and must never reach the filters
+    assert _verra_to_listing({"_id": "x", "url": "/en/l/x", "isRentals": False, "rentalsPrice": 0}) is None
+
+
+def test_format_listing_prefers_llm_total_over_advertised_rent():
+    listing = Listing(
+        source="verra", external_id="x", url="https://verra.nl/x",
+        address="Factorij 129", city="Rotterdam", rent=2195,
+    )
+    plain = format_listing(listing)
+    assert "€2195/mo" in plain and "8/10" not in plain
+    scored = format_listing(listing, None, {"score": 8, "reason": "Big, close to work.",
+                                            "rent_basis": "kale", "total_monthly": 2350})
+    assert "€2350/mo excl. servicekosten" in scored
+    assert "8/10" in scored and "Big, close to work." in scored
+    assert "direct from makelaar" in scored
 
 
 def test_parse_duration_seconds():
