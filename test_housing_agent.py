@@ -158,7 +158,24 @@ def test_format_listing_prefers_llm_total_over_advertised_rent():
                                             "rent_basis": "kale", "total_monthly": 2350})
     assert "€2350/mo excl. servicekosten" in scored
     assert "8/10" in scored and "Big, close to work." in scored
-    assert "direct from makelaar" in scored
+
+
+def test_source_badges_distinguish_direct_from_aggregator():
+    def badge(source):
+        return format_listing(Listing(source=source, external_id="x", url="https://e.nl/x",
+                                      address="A 1", city="Delft", rent=1400)).splitlines()[0]
+
+    assert badge("verra") == "\U0001f534 <b>DIRECT — VERRA Makelaars</b>"
+    assert badge("pararius") == "\U0001f535 Pararius"
+    assert badge("funda") == "\U0001f7e0 Funda"
+    # an unmapped scraper still reads as direct rather than silently looking like an aggregator
+    assert badge("de_boer") == "\U0001f534 <b>DIRECT — De Boer</b>"
+
+
+def test_format_listing_shows_size_and_bedrooms_when_known():
+    base = dict(source="verra", external_id="x", url="https://e.nl/x", address="A 1", city="Delft", rent=1400)
+    assert "62 m² · 2 bd" in format_listing(Listing(**base, size_m2=62, bedrooms=2))
+    assert "·" not in format_listing(Listing(**base)).split("\n")[1]  # nothing dangling when unknown
 
 
 def test_parse_duration_seconds():
