@@ -40,13 +40,47 @@ def format_minutes(total_minutes: int) -> str:
     return f"{minutes}min"
 
 
-def commute_highlight(origin_address: str) -> Optional[str]:
-    """'🚲 1h 5min · 🚆 25min', or None if both lookups fail."""
-    bike = _duration_minutes(origin_address, "BICYCLE")
-    transit = _duration_minutes(origin_address, "TRANSIT")
+def _safe_minutes(origin_address: str, mode: str) -> Optional[int]:
+    try:
+        return _duration_minutes(origin_address, mode)
+    except Exception as e:
+        print(f"commute lookup failed ({mode}) for {origin_address}: {e}")
+        return None
+
+
+_CACHE: dict = {}
+
+
+def commute_info(origin_address: str) -> dict:
+    """{'bike': min|None, 'transit': min|None, 'text': str|None}.
+
+    Memoised for the process: the same address can be filtered on and then
+    rendered, and repeat cities are common within one run.
+    """
+    if origin_address in _CACHE:
+        return _CACHE[origin_address]
+
+    bike = _safe_minutes(origin_address, "BICYCLE")
+    transit = _safe_minutes(origin_address, "TRANSIT")
     parts = []
     if bike is not None:
         parts.append(f"\U0001F6B2 {format_minutes(bike)}")
     if transit is not None:
         parts.append(f"\U0001F686 {format_minutes(transit)}")
-    return " · ".join(parts) if parts else None
+    info = {"bike": bike, "transit": transit, "text": " · ".join(parts) if parts else None}
+    _CACHE[origin_address] = info
+    return info
+
+
+def within_commute(info: dict, prefs: dict) -> bool:
+    """Fails open: if the lookup failed we don't know, so don't silently drop a
+    listing over a Routes API hiccup."""
+    limit = prefs.get("max_commute_minutes")
+    if limit is None or info.get("transit") is None:
+        return True
+    return info["transit"] <= limit
+
+
+def commute_highlight(origin_address: str) -> Optional[str]:
+    """'🚲 1h 5min · 🚆 25min', or None if both lookups fail."""
+    return commute_info(origin_address)["text"]

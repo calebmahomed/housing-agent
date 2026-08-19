@@ -14,7 +14,9 @@ alert; dedup.py suppresses the aggregator copy that arrives later.
 # maintenance the plan warned about. Add those only when the stock justifies it.
 """
 
+import re
 import time
+from html import unescape
 from typing import Optional
 
 import requests
@@ -91,8 +93,151 @@ def fetch_platform_listings(source: str, base: str, max_age_hours: int = 24) -> 
     return listings
 
 
+# --- Vesteda -----------------------------------------------------------------
+# Institutional landlord, large portfolio in the €900-1400 band. Its map widget
+# POSTs to this endpoint; the response is the same catalogue the public search
+# page shows. No date-added field, so freshness comes from `status` plus the
+# seen-state file rather than an age cutoff.
+VESTEDA_BASE = "https://www.vesteda.com"
+VESTEDA_API = VESTEDA_BASE + "/api/units/search"
+# From Vesteda's own bundle: getStatusName() maps 1 "nieuw", 2 "verhuurd",
+# 3 "verhuurd onder voorbehoud", 4 "gereserveerd". Only 1 is actually rentable
+# — the other three are ~80% of the feed and are already gone.
+VESTEDA_AVAILABLE = 1
+
+
+def fetch_vesteda_listings(max_age_hours: int = 24) -> list[Listing]:
+    try:
+        resp = requests.post(
+            VESTEDA_API,
+            headers={"User-Agent": UA, "Content-Type": "application/json", "Accept": "application/json"},
+            json={"s": "", "placeType": 0, "rootId": 1303},
+            timeout=30,
+        )
+        resp.raise_for_status()
+        items = resp.json().get("items") or []
+    except Exception as e:
+        print(f"vesteda fetch failed: {e}")
+        return []
+
+    listings = []
+    for item in items:
+        if item.get("status") != VESTEDA_AVAILABLE:
+            continue
+        rent = item.get("priceUnformatted") or 0
+        url, street = item.get("url"), item.get("street")
+        if not rent or not url or not street:
+            continue
+        number = " ".join(str(p) for p in (item.get("houseNumber"), item.get("houseNumberAddition")) if p)
+        listings.append(
+            Listing(
+                source="vesteda",
+                external_id=str(item.get("id") or url),
+                url=VESTEDA_BASE + url,
+                address=f"{street} {number}".strip(),
+                city=item.get("city", ""),
+                rent=float(rent),
+                size_m2=float(item["size"]) if item.get("size") else None,
+                bedrooms=item.get("numberOfBedRooms"),
+                description=item.get("complex", ""),
+                image_urls=[item["imageBig"]] if item.get("imageBig") else [],
+                raw=item,
+            )
+        )
+    return listings
+
+
+# --- ikwilhuren.nu (MVGM) -----------------------------------------------------
+# Server-rendered cards, robots.txt allows everything ("Disallow:" with no
+# value). Each card carries a "Sinds N dagen online" title, which is a real
+# freshness signal — so this source can honour max_age_hours properly.
+IKWILHUREN_BASE = "https://www.ikwilhuren.nu"
+IKWILHUREN_LIST = IKWILHUREN_BASE + "/aanbod/"
+CARD_RE = re.compile(r'<div class="card card-woning.*?(?=<div class="card card-woning|\Z)', re.S)
+TYPE_PREFIX = re.compile(
+    r"^(?:vrijstaande\s+|halfvrijstaande\s+)?"
+    r"\w*(?:woning|flat|huis|kamer|studio|penthouse|maisonnette|appartement|loft)\b\s*",
+    re.I,
+)
+IKW_FIELDS = {
+    "href": re.compile(r'href="(/object/[^"]+)"'),
+    "title": re.compile(r'stretched-link[^>]*>\s*([^<]+?)\s*<'),
+    "place": re.compile(r"<span>(\d{4}\s?[A-Z]{2})\s+([^<]+)</span>"),
+    "price": re.compile(r"€\s*([\d.]+)"),
+    "size": re.compile(r"<span>(\d+)\s*m<sup>2</sup></span>"),
+    "beds": re.compile(r"<span>(\d+)\s*slaapkamers?\s*</span>"),
+    "days": re.compile(r'title="Sinds ([\d.]+) dagen online"'),
+    "img": re.compile(r"src='(//[^']+\.jpg[^']*)'"),
+}
+
+
+def _parse_ikwilhuren_card(card: str, max_age_hours: float) -> Optional[Listing]:
+    def grab(key, group=1):
+        m = IKW_FIELDS[key].search(card)
+        return m.group(group) if m else None
+
+    href, price, place = grab("href"), grab("price"), IKW_FIELDS["place"].search(card)
+    if not (href and price and place):
+        return None
+
+    days = grab("days")
+    if days is not None and float(days) * 24 > max_age_hours:
+        return None
+
+    title = unescape(grab("title") or "")
+    # titles read "<dwelling type> <address>": "Appartement Dr. H. Colijnstraat
+    # 528", "Eengezinswoning Schorsmolen 27". Match the type by its suffix
+    # rather than listing every compound Dutch word for a home.
+    address = TYPE_PREFIX.sub("", title).strip()
+    size, beds, img = grab("size"), grab("beds"), grab("img")
+    return Listing(
+        source="ikwilhuren",
+        external_id=href.strip("/").split("/")[-1],
+        url=IKWILHUREN_BASE + href,
+        address=address,
+        city=unescape(place.group(2)).strip(),
+        rent=float(price.replace(".", "")),
+        size_m2=float(size) if size else None,
+        bedrooms=int(beds) if beds else None,
+        description=title,
+        image_urls=["https:" + img] if img else [],
+        raw={"postal_code": place.group(1), "days_online": days},
+    )
+
+
+def fetch_ikwilhuren_listings(max_age_hours: int = 24, max_pages: int = 5) -> list[Listing]:
+    listings = []
+    # 1-indexed: ?page=0 and ?page=1 both serve the first page
+    for page in range(1, max_pages + 1):
+        try:
+            resp = requests.get(
+                IKWILHUREN_LIST, params={"page": page}, headers={"User-Agent": UA}, timeout=30
+            )
+            resp.raise_for_status()
+        except Exception as e:
+            print(f"ikwilhuren page {page} fetch failed: {e}")
+            break
+        cards = CARD_RE.findall(resp.text)
+        if not cards:
+            break
+        fresh = [_parse_ikwilhuren_card(c, max_age_hours) for c in cards]
+        listings.extend(l for l in fresh if l)
+        # cards are ordered newest-first, so once a whole page is too old to
+        # qualify there is nothing newer deeper in the list
+        if not any(l for l in fresh):
+            break
+    return listings
+
+
+# Sources with no date-added field can't honour max_age_hours; main.py seeds
+# them on first sight instead of alerting on the whole back catalogue.
+UNDATED_SOURCES = {"vesteda"}
+
+
 def fetch_scraped_listings(max_age_hours: int = 24) -> list[Listing]:
     out = []
     for source, base in PLATFORM_SITES:
         out.extend(fetch_platform_listings(source, base, max_age_hours))
+    out.extend(fetch_vesteda_listings(max_age_hours))
+    out.extend(fetch_ikwilhuren_listings(max_age_hours))
     return out

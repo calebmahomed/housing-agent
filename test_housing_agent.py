@@ -3,7 +3,7 @@
 from datetime import datetime
 from pathlib import Path
 
-from housing_agent.commute import _parse_duration_seconds, format_minutes
+from housing_agent.commute import _parse_duration_seconds, format_minutes, within_commute
 from housing_agent.dedup import is_duplicate
 from housing_agent.detail_check import _strip_html, contains_excluded_phrase
 from housing_agent.filters import max_affordable_rent, passes_hard_filters
@@ -11,10 +11,27 @@ from housing_agent.ingest import _source_for, extract_image_urls, parse_funda, p
 from housing_agent.listing import Listing
 from housing_agent.notify import format_listing
 from housing_agent.quiet_hours import in_quiet_hours
-from housing_agent.scrape import _to_listing
+from housing_agent.scrape import _parse_ikwilhuren_card, _to_listing
+
+IKWILHUREN_CARD = """<div class="card card-woning shadow-sm">
+<div class="card-img-top"><picture><img src='//d.static.nbo.nl/media/6f/abc/768x510/thumb.jpg' alt="x"/></picture></div>
+<div class="card-body d-flex flex-column">
+<span class="card-title h5 text-secondary mb-0">
+<a class="stretched-link" href="/object/amsterdam-1067cp-528-dr-h-colijnstraat-e908b12c/" >
+                    Eengezinswoning Dr. H. Colijnstraat 528 
+                </a>
+</span>
+<span>1067CP Amsterdam</span>
+<span class="small">
+<span title="Sinds 0.81898148148148 dagen online">Nieuw</span>
+</span>
+<div class="pt-4 dotted-spans mt-auto">
+<span class="fw-bold">€ 1.780,- /mnd</span>
+<span>99 m<sup>2</sup></span>
+<span>3  slaapkamers </span>
+</div></div></div>"""
 
 PREFS = {
-    "cities": ["Den Haag", "Delft"],
     "annual_income": 55000,
     "income_to_rent_ratio": 3,
     "min_bedrooms": 2,
@@ -78,9 +95,21 @@ def test_hard_filters_reject_over_budget_on_total():
     assert not passes_hard_filters(listing, PREFS)
 
 
-def test_hard_filters_reject_wrong_city():
-    listing = Listing(source="x", external_id="1", url="", address="A", city="Amsterdam", rent=1500)
-    assert not passes_hard_filters(listing, PREFS)
+def test_hard_filters_ignore_city_now_that_commute_decides_location():
+    # a fixed whitelist used to drop these; location is judged on travel time
+    for city in ("Rijswijk", "'s-Gravenhage", "Oegstgeest"):
+        listing = Listing(source="x", external_id="1", url="", address="A", city=city, rent=1200)
+        assert passes_hard_filters(listing, PREFS), city
+
+
+def test_within_commute_uses_transit_and_fails_open():
+    prefs = {"max_commute_minutes": 90}
+    assert within_commute({"transit": 62}, prefs)
+    assert not within_commute({"transit": 140}, prefs)
+    # a Routes API failure must not silently hide a listing
+    assert within_commute({"transit": None}, prefs)
+    # no limit configured means no location filtering at all
+    assert within_commute({"transit": 999}, {})
 
 
 def test_cross_source_dedup():
@@ -216,6 +245,23 @@ def test_format_minutes():
 def test_quiet_hours_wraps_midnight():
     assert in_quiet_hours(datetime(2026, 1, 1, 3, 0), start=23, end=8)
     assert not in_quiet_hours(datetime(2026, 1, 1, 12, 0), start=23, end=8)
+
+
+def test_ikwilhuren_card_parses_real_markup():
+    listing = _parse_ikwilhuren_card(IKWILHUREN_CARD, max_age_hours=24)
+    assert listing.source == "ikwilhuren"
+    assert listing.address == "Dr. H. Colijnstraat 528"   # dwelling type stripped
+    assert listing.city == "Amsterdam"
+    assert listing.rent == 1780.0
+    assert listing.size_m2 == 99 and listing.bedrooms == 3
+    assert listing.url == "https://www.ikwilhuren.nu/object/amsterdam-1067cp-528-dr-h-colijnstraat-e908b12c/"
+    assert listing.image_urls == ["https://d.static.nbo.nl/media/6f/abc/768x510/thumb.jpg"]
+
+
+def test_ikwilhuren_card_respects_age_cutoff():
+    # "Sinds 0.818 dagen online" ~= 19.6h, so a 12h window must exclude it
+    assert _parse_ikwilhuren_card(IKWILHUREN_CARD, max_age_hours=12) is None
+    assert _parse_ikwilhuren_card(IKWILHUREN_CARD, max_age_hours=24) is not None
 
 
 if __name__ == "__main__":

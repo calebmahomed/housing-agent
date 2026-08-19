@@ -10,8 +10,9 @@ def max_affordable_rent(prefs: dict) -> float:
 
 
 def passes_hard_filters(listing: Listing, prefs: dict) -> bool:
-    if listing.city.strip().lower() not in {c.lower() for c in prefs["cities"]}:
-        return False
+    """Cheap, offline checks only. Location is judged on commute time instead of
+    a city whitelist — see commute.within_commute, called separately because it
+    costs an API round trip and should run only on listings that got this far."""
     if listing.total_monthly > max_affordable_rent(prefs):
         return False
     if listing.bedrooms is not None and listing.bedrooms < prefs.get("min_bedrooms", 0):

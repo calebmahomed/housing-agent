@@ -1,29 +1,12 @@
-# saved-search cities, plus every city within ~1h45 transit of work (Singel
-# 542, Amsterdam) per a Routes API check on 2026-08-04 (Nijmegen/Tilburg/
-# Leeuwarden/Groningen/Enschede/Maastricht all exceeded 105 min and are excluded)
-cities:
-  - Amsterdam
-  - Utrecht
-  - Delft
-  - Haarlem
-  - Zaandam
-  - Rotterdam
-  - Den Haag
-  - Almere
-  - Lelystad
-  - Hilversum
-  - Amersfoort
-  - Leiden
-  - Gouda
-  - Alkmaar
-  - Hoorn
-  - Zwolle
-  - Apeldoorn
-  - Arnhem
-  - Deventer
-  - Breda
-  - "'s-Hertogenbosch"
-  - Dordrecht
+# No city whitelist. A fixed list silently dropped exactly the small commuter
+# towns that suit us — VERRA listings in Rijswijk, Oegstgeest and Maassluis were
+# being filtered out, and Vesteda writes Den Haag as "'s-Gravenhage", which no
+# hand-maintained list would have matched. Filter on the thing we actually care
+# about instead: transit time to work (Singel 542, Amsterdam). This keeps Den
+# Haag, Rijswijk, Delft and Leiden in, and drops Maastricht/Groningen/Assen
+# without anyone having to remember to add them.
+# Lookups fail open, so a Routes API outage never silently hides a listing.
+max_commute_minutes: 90
 annual_income: 55000
 income_to_rent_ratio: 3  # landlords typically require gross monthly income >= 3x rent
 # hard ceiling on total_monthly, binds before the €1528 income cap. Set to 1400
