@@ -19,7 +19,9 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: playwright install --with-deps chromium
+      # no chromium install: scraped makelaar sites serve plain HTML, so
+      # fetch_page_text never needs the Playwright fallback here (and it fails
+      # open if it ever did). Saves ~2 min and a flaky apt step per test run.
 
       # no `permissions: contents: write` and no commit step — this workflow
       # is read-only by design, so a test send can't consume a real listing
