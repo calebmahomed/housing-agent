@@ -44,8 +44,23 @@ def format_listing(listing: Listing, commute: Optional[str] = None, score: Optio
 
 
 def _post(method: str, payload: dict) -> bool:
+    """False on any failure, never raises.
+
+    A read timeout here used to propagate out of main() and abort the run
+    before it saved state (poll run 32283629432) — losing the record of
+    everything already sent that run. Delivery is best-effort; the state file
+    is not.
+
+    Telegram fetches photo URLs itself on sendPhoto/sendMediaGroup, so those
+    calls are legitimately slow — hence the timeout well above the 10s that
+    was timing out.
+    """
     token = os.environ["TELEGRAM_BOT_TOKEN"]
-    resp = requests.post(TELEGRAM_API.format(token=token, method=method), json=payload, timeout=10)
+    try:
+        resp = requests.post(TELEGRAM_API.format(token=token, method=method), json=payload, timeout=30)
+    except Exception as e:
+        print(f"Telegram {method} failed: {type(e).__name__}: {e}")
+        return False
     if not resp.ok:
         print(f"Telegram {method} failed: {resp.status_code} {resp.text}")
     return resp.ok

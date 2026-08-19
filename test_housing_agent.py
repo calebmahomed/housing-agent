@@ -5,6 +5,9 @@ from pathlib import Path
 
 from housing_agent.commute import _parse_duration_seconds, format_minutes, within_commute
 from housing_agent.dedup import is_duplicate
+import os
+
+import requests
 import yaml
 
 from housing_agent.detail_check import _strip_html, contains_exclusion, contains_excluded_phrase
@@ -283,6 +286,22 @@ def test_exclusion_does_not_fire_on_ordinary_listing_text():
                  "Woonoppervlakte 55 m2, bouwjaar 1950",
                  "Op 50 meter van het station"):
         assert not contains_exclusion(text, prefs), text
+
+
+def test_telegram_post_swallows_network_errors():
+    # a read timeout here once aborted the whole poll run before it saved
+    # state, losing the record of everything already sent that run
+    import housing_agent.notify as notify
+
+    def boom(*a, **kw):
+        raise requests.exceptions.ReadTimeout("read timed out")
+
+    original, os.environ["TELEGRAM_BOT_TOKEN"] = notify.requests.post, "test-token"
+    notify.requests.post = boom
+    try:
+        assert notify._post("sendMessage", {"chat_id": 1, "text": "hi"}) is False
+    finally:
+        notify.requests.post = original
 
 
 if __name__ == "__main__":
