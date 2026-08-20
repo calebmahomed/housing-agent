@@ -6,6 +6,7 @@ from .config import load_prefs, require_env
 from .dedup import is_duplicate
 from .detail_check import contains_exclusion, fetch_page_text
 from .filters import passes_hard_filters
+from .heartbeat import heartbeat
 from .ingest import fetch_new_alert_emails
 from .listing import Listing
 from .notify import format_listing, send_notification
@@ -68,7 +69,8 @@ def main() -> None:
         if item:
             to_notify.append(item)
 
-    if in_quiet_hours():
+    quiet = in_quiet_hours()
+    if quiet:
         save(QUEUED_PATH, to_notify)
     else:
         for item in to_notify:
@@ -76,6 +78,11 @@ def main() -> None:
         save(QUEUED_PATH, [])
 
     save(SEEN_PATH, seen)
+    # after the state saves, deliberately: nothing here may cost us the record
+    # of what we already sent. Skipped during quiet hours so the weekly report
+    # can't land at 04:00 — it just goes out on the next waking run.
+    if not quiet:
+        heartbeat(alerts=len(to_notify), seen_count=len(seen))
 
 
 if __name__ == "__main__":

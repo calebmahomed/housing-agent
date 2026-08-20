@@ -1,7 +1,11 @@
 """Plain assert-based self-check. Run: python test_housing_agent.py"""
 
-from datetime import datetime
+import tempfile
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+from housing_agent import heartbeat as heartbeat_mod
+from housing_agent.notify import send_telegram
 
 from housing_agent.config import load_prefs, require_env
 from housing_agent.commute import _parse_duration_seconds, format_minutes, within_commute
@@ -330,6 +334,31 @@ def test_missing_secrets_fail_loudly_rather_than_degrading():
             os.environ[k] = v if v is not None else ""
             if not v:
                 os.environ.pop(k, None)
+
+
+def test_heartbeat_reports_weekly_and_accumulates_alerts_between_runs():
+    sent = []
+    heartbeat_mod.send_telegram = sent.append
+    heartbeat_mod.PATH = str(Path(tempfile.mkdtemp()) / "heartbeat.json")
+    t0 = datetime(2026, 9, 1, 12, 0, tzinfo=timezone.utc)
+    try:
+        # first ever run only starts the clock — no "past week" to report yet
+        heartbeat_mod.heartbeat(alerts=1, seen_count=100, now=t0)
+        assert sent == []
+
+        heartbeat_mod.heartbeat(alerts=2, seen_count=105, now=t0 + timedelta(days=3))
+        assert sent == [], "must not report before a full week"
+
+        heartbeat_mod.heartbeat(alerts=1, seen_count=112, now=t0 + timedelta(days=7))
+        assert len(sent) == 1, "a week on, silence should be broken"
+        assert "3 alert(s)" in sent[0], f"alerts must survive intervening runs: {sent[0]}"
+        assert "12 new listing(s)" in sent[0] and "112 known" in sent[0], sent[0]
+
+        # window resets: the next report counts from the last one, not from t0
+        heartbeat_mod.heartbeat(alerts=0, seen_count=120, now=t0 + timedelta(days=14))
+        assert "0 alert(s)" in sent[1] and "8 new listing(s)" in sent[1], sent[1]
+    finally:
+        heartbeat_mod.send_telegram = send_telegram
 
 
 if __name__ == "__main__":

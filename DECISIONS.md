@@ -9,6 +9,20 @@ revisiting. Keep entries short; the detail lives in the linked commit.
 
 ---
 
+## 2026-08-20 — Weekly heartbeat rides the poll run, not its own cron
+Silence was ambiguous: "nothing matched" and "the bot is dead" looked identical,
+and the 60-day scheduled-workflow auto-disable (plan §1, still unconfirmed with
+`GITHUB_TOKEN` commits) fails exactly that way. `heartbeat.py` counts each run's
+alerts and reports once a week.
+**Not a separate scheduled workflow on purpose:** that cron would be disabled by
+the same inactivity rule it exists to detect, so it would go quiet precisely when
+it mattered. Riding `poll.yml` makes a missing heartbeat proof that polling
+stopped.
+Called *after* both state saves and skipped during quiet hours — it's the least
+important thing in the run and must not cost the record of what was already sent,
+nor fire a status report at 04:00. Counters accumulate in `data/heartbeat.json`,
+which is byte-identical on zero-alert runs, so quiet runs still produce no commit.
+
 ## 2026-08-20 — Income and work address moved to Actions secrets
 The repo is public and `preferences.yaml` carried `annual_income: 55000` while
 `commute.py` hardcoded the work address — the plan (§1) called for keeping these
@@ -164,8 +178,6 @@ free Postgres tier, per the plan.
 - `parse_funda` is still best-guess regex; never validated against a real Funda
   alert email. `parse_pararius` was fixed against real captured mail and has
   fixtures — Funda needs the same treatment.
-- No weekly heartbeat to Telegram, so silence is indistinguishable from
-  "no matches".
 - Phase 4 (application pre-fill from `tenant-docs/`) not started. User wants
   assist-only — no auto-submission of financial or ID documents.
 - Whether `GITHUB_TOKEN` commits reset the 60-day scheduled-workflow inactivity
