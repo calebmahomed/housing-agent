@@ -4,5 +4,17 @@
     "key": "1b1368ae4f00",
     "listing": {},
     "reason": "too expensive"
+  },
+  {
+    "decision": "pass",
+    "key": "ffb3599ae04f",
+    "listing": {
+      "address": "1e Van der Kunstraat",
+      "external_id": "9ab5506f9660",
+      "size_m2": 33.0,
+      "source": "pararius",
+      "total_monthly": 1015.0
+    },
+    "reason": "not a fit"
   }
 ]
