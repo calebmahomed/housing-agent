@@ -6,8 +6,7 @@ ignoring quiet hours, since it's an explicit on-demand catch-up."""
 
 import sys
 
-import yaml
-
+from .config import load_prefs, require_env
 from .ingest import fetch_recent_alert_emails
 from .main import SEEN_PATH, prepare
 from .notify import send_notification
@@ -15,8 +14,8 @@ from .state import load, save
 
 
 def run(hours: int = 12) -> int:
-    with open("preferences.yaml") as f:
-        prefs = yaml.safe_load(f)
+    require_env()
+    prefs = load_prefs()
 
     seen = load(SEEN_PATH)
     sent = 0

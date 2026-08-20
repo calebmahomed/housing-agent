@@ -3,6 +3,7 @@
 from datetime import datetime
 from pathlib import Path
 
+from housing_agent.config import load_prefs, require_env
 from housing_agent.commute import _parse_duration_seconds, format_minutes, within_commute
 from housing_agent.dedup import is_duplicate
 import os
@@ -302,6 +303,33 @@ def test_telegram_post_swallows_network_errors():
         assert notify._post("sendMessage", {"chat_id": 1, "text": "hi"}) is False
     finally:
         notify.requests.post = original
+
+
+def test_private_values_are_not_in_the_repo():
+    # this repo is public: income and work address must come from secrets
+    assert "annual_income" not in yaml.safe_load(Path("preferences.yaml").read_text())
+    assert "Singel" not in Path("housing_agent/commute.py").read_text()
+
+
+def test_missing_secrets_fail_loudly_rather_than_degrading():
+    # a missing income silently relaxes the rent cap; a missing work address
+    # silently disables location filtering. Both look like working software.
+    saved = {k: os.environ.pop(k, None) for k in ("ANNUAL_INCOME", "WORK_ADDRESS")}
+    try:
+        try:
+            require_env()
+        except SystemExit as e:
+            assert "ANNUAL_INCOME" in str(e) and "WORK_ADDRESS" in str(e)
+        else:
+            raise AssertionError("require_env() should have exited")
+        os.environ.update(ANNUAL_INCOME="55000", WORK_ADDRESS="Somewhere 1, Amsterdam")
+        require_env()
+        assert load_prefs()["annual_income"] == 55000.0
+    finally:
+        for k, v in saved.items():
+            os.environ[k] = v if v is not None else ""
+            if not v:
+                os.environ.pop(k, None)
 
 
 if __name__ == "__main__":

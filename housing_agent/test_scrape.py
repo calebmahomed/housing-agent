@@ -10,8 +10,7 @@ Usage: python -m housing_agent.test_scrape [hours] [limit]
 
 import sys
 
-import yaml
-
+from .config import load_prefs, require_env
 from .main import SEEN_PATH, prepare
 from .notify import send_notification, send_telegram
 from .scrape import fetch_scraped_listings
@@ -19,8 +18,8 @@ from .state import load
 
 
 def run(hours: int = 720, limit: int = 3) -> int:
-    with open("preferences.yaml") as f:
-        prefs = yaml.safe_load(f)
+    require_env()
+    prefs = load_prefs()
 
     listings = fetch_scraped_listings(hours)
     seen = load(SEEN_PATH)  # read-only: deliberately never saved back

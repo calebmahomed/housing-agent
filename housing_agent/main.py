@@ -1,9 +1,8 @@
 import itertools
 from typing import Optional
 
-import yaml
-
 from .commute import commute_info, within_commute
+from .config import load_prefs, require_env
 from .dedup import is_duplicate
 from .detail_check import contains_exclusion, fetch_page_text
 from .filters import passes_hard_filters
@@ -47,8 +46,8 @@ def prepare(listing: Listing, prefs: dict, seen: list, seeding: set = frozenset(
 
 
 def main() -> None:
-    with open("preferences.yaml") as f:
-        prefs = yaml.safe_load(f)
+    require_env()
+    prefs = load_prefs()
 
     seen = load(SEEN_PATH)
     queued = load(QUEUED_PATH)

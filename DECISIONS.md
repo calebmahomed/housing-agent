@@ -9,6 +9,21 @@ revisiting. Keep entries short; the detail lives in the linked commit.
 
 ---
 
+## 2026-08-20 — Income and work address moved to Actions secrets
+The repo is public and `preferences.yaml` carried `annual_income: 55000` while
+`commute.py` hardcoded the work address — the plan (§1) called for keeping these
+out of the tree and it hadn't been done. Only those two values moved; the rest
+of `preferences.yaml` stays in the repo so filter behaviour remains readable
+and reviewable.
+`config.require_env()` fails the run when a secret is missing rather than
+degrading: an absent income silently relaxes the rent cap, and an absent work
+address silently disables location filtering entirely — both look like working
+software while sending the wrong listings.
+**Still outstanding:** both values remain in git history (they were committed
+from 2026-08-03). Removing them needs a history rewrite (`git filter-repo`) and
+a force-push; not done, because the income figure is low-sensitivity and the
+rewrite breaks every existing clone and commit link.
+
 ## 2026-08-19 — Telegram failures must never abort the run (`7e72e60`)
 A 10s read timeout to `api.telegram.org` propagated out of `_post` through
 `main()`, so poll run `32283629432` exited **before saving state** — losing the

@@ -7,7 +7,8 @@
 # without anyone having to remember to add them.
 # Lookups fail open, so a Routes API outage never silently hides a listing.
 max_commute_minutes: 90
-annual_income: 55000
+# annual_income is NOT here on purpose — this repo is public. It comes from the
+# ANNUAL_INCOME GitHub Actions secret via config.load_prefs().
 income_to_rent_ratio: 3  # landlords typically require gross monthly income >= 3x rent
 # hard ceiling on total_monthly, binds before the €1528 income cap. Set to 1400
 # on 2026-08-19 after a rejection at €1450 — at that level we're competing with

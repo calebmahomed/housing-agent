@@ -3,7 +3,10 @@ from typing import Optional
 
 import requests
 
-WORK_ADDRESS = "Singel 542, 1017 AZ Amsterdam"
+# Kept out of this public repo — supplied by the WORK_ADDRESS secret.
+# config.require_env() fails the run if it is missing, rather than letting the
+# commute filter silently pass everything.
+WORK_ADDRESS = os.environ.get("WORK_ADDRESS", "")
 ROUTES_URL = "https://routes.googleapis.com/directions/v2:computeRoutes"
 
 
