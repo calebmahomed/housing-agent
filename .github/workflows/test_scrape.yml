@@ -32,3 +32,6 @@ jobs:
           GOOGLE_ROUTES_API_KEY: ${{ secrets.GOOGLE_ROUTES_API_KEY }}
           ANNUAL_INCOME: ${{ secrets.ANNUAL_INCOME }}
           WORK_ADDRESS: ${{ secrets.WORK_ADDRESS }}
+          # without this the test run silently scores nothing, so the workflow
+          # we verify with wouldn't exercise the path we're verifying
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
