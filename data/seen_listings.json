@@ -803,5 +803,33 @@
     "size_m2": 33.0,
     "source": "pararius",
     "total_monthly": 1015.0
+  },
+  {
+    "address": "Parkzicht 23",
+    "external_id": "14483",
+    "size_m2": 85.0,
+    "source": "vesteda",
+    "total_monthly": 1145.69
+  },
+  {
+    "address": "Van Sijpesteijnkade 193",
+    "external_id": "utrecht-3521ah-193-van-sijpesteijnkade-f5f7b583909607cece7ed73c43dadc50",
+    "size_m2": 50.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1249.0
+  },
+  {
+    "address": "Van Sijpesteijnkade 5 K",
+    "external_id": "utrecht-3521ah-5-k-van-sijpesteijnkade-fd99d6d593125b88be405f2fecea2324",
+    "size_m2": 68.0,
+    "source": "ikwilhuren",
+    "total_monthly": 214.0
+  },
+  {
+    "address": "Suezkade",
+    "external_id": "e9b7e89cae27",
+    "size_m2": 46.0,
+    "source": "pararius",
+    "total_monthly": 1082.0
   }
 ]
