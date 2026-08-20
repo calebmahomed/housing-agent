@@ -362,6 +362,35 @@ def test_heartbeat_reports_weekly_and_accumulates_alerts_between_runs():
         heartbeat_mod.send_telegram = send_telegram
 
 
+def test_shared_kitchen_or_bathroom_is_excluded():
+    prefs = yaml.safe_load(Path("preferences.yaml").read_text())
+    for text in [
+        "Ruime kamer met gedeelde keuken en gedeelde badkamer.",
+        "Onzelfstandige woonruimte, sanitair op de gang.",
+        "De keuken en badkamer worden gedeeld met twee andere huurders.",
+        "Studio with shared kitchen, private entrance.",
+        "Room in shared bathroom setup",
+        "Kamerverhuur, huurder deelt voorzieningen.",
+        "Bij hospita op de eerste etage.",
+        "Gemeenschappelijke douche op de gang.",
+    ]:
+        assert contains_exclusion(text, prefs), text
+
+
+def test_ordinary_shared_building_amenities_are_not_excluded():
+    # a bare "gedeeld" would drop half the market: shared gardens, entrances and
+    # bike storage are normal in any Dutch apartment block
+    prefs = yaml.safe_load(Path("preferences.yaml").read_text())
+    for text in [
+        "Zelfstandige woonruimte met eigen keuken en badkamer.",
+        "Appartement met gedeelde tuin en gedeelde fietsenstalling.",
+        "Gemeenschappelijke entree en een gemeenschappelijke ruimte op de begane grond.",
+        "Eigen badkamer; de tuin wordt gedeeld met de buren.",
+        "Private kitchen and bathroom, shared garden.",
+    ]:
+        assert not contains_exclusion(text, prefs), text
+
+
 def test_income_test_trusts_a_stated_ratio_and_assumes_stricter_without_one():
     prefs = {"annual_income": 55000.0, "assumed_income_to_rent_ratio": 3.5}  # €4583/mo
 

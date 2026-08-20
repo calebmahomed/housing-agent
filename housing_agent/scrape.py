@@ -151,7 +151,10 @@ def fetch_vesteda_listings(max_age_hours: int = 24) -> list[Listing]:
 # Server-rendered cards, robots.txt allows everything ("Disallow:" with no
 # value). Each card carries a "Sinds N dagen online" title, which is a real
 # freshness signal — so this source can honour max_age_hours properly.
-IKWILHUREN_BASE = "https://www.ikwilhuren.nu"
+# Apex, not www: on 2026-08-20 the site started 301ing www -> apex and moved
+# behind Cloudflare. requests follows the redirect, so this isn't what broke the
+# fetch — it just saves a round trip and makes the failing URL the real one.
+IKWILHUREN_BASE = "https://ikwilhuren.nu"
 IKWILHUREN_LIST = IKWILHUREN_BASE + "/aanbod/"
 CARD_RE = re.compile(r'<div class="card card-woning.*?(?=<div class="card card-woning|\Z)', re.S)
 TYPE_PREFIX = re.compile(

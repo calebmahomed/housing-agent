@@ -33,6 +33,21 @@ exclude_phrases:
   - "geschikt voor één persoon"
   - "geschikt voor 1 persoon"
   - "suitable for one person"
+  # The place has to be self-contained — no sharing a kitchen or bathroom with
+  # other tenants. Listed as literal phrases because these exact wordings are
+  # what the portals use; the varying ones are regexes below.
+  - "gedeelde keuken"
+  - "gedeelde badkamer"
+  - "gedeelde douche"
+  - "gedeeld toilet"
+  - "gemeenschappelijke keuken"
+  - "gemeenschappelijke badkamer"
+  - "gemeenschappelijke douche"
+  - "shared kitchen"
+  - "shared bathroom"
+  - "shared facilities"
+  - "kamerverhuur"
+  - "hospita"
 # Regexes, checked against the listing page text as well as the description.
 # Age-restricted complexes are the reason these exist: Vesteda phrases it as
 # "min.leeftijd 50 jaar" / "min. leeftijd 50 jr", which no literal phrase above
@@ -44,3 +59,14 @@ exclude_patterns:
   - "\\b(?:50|55|60|65)\\s*[-]?plus(?:sers|ers)?\\b"
   - "senioren(?:woning|complex|appartement)"
   - "\\bseniorenwoningen\\b"
+  # Self-contained only. "onzelfstandig" is the Dutch legal term for a place
+  # whose kitchen/bathroom/toilet are shared — it is the single most reliable
+  # signal, and matching it can't catch the good case: the opposite term is
+  # "zelfstandige woonruimte", which this pattern deliberately does not match.
+  - "onzelfstandig"
+  # Deliberately narrow to the rooms that matter. A "gedeelde tuin", "gedeelde
+  # entree" or "gemeenschappelijke ruimte" is normal in any apartment block and
+  # must not be excluded — a bare "gedeeld" would have dropped half the market.
+  - "(?:keuken|badkamer|douche|toilet|sanitair)\\s+(?:\\w+\\s+){0,3}?(?:wordt|worden)\\s+gedeeld"
+  - "gedeelde\\s+sanitaire\\s+voorzieningen"
+  - "shared\\s+(?:kitchen|bathroom|shower|toilet)"
