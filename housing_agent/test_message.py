@@ -1,9 +1,15 @@
-"""One-off Telegram delivery test, with a real Routes API commute lookup
-against a fake listing. Not part of the poll pipeline."""
+"""One-off Telegram delivery test, with a real Routes API commute lookup and a
+real Claude scoring call against a fake listing. Not part of the poll pipeline.
+
+Scoring is here rather than in test_scrape because that one dedups against real
+state, so once state is warm it sends nothing and exercises nothing.
+"""
 
 from .commute import commute_highlight
+from .config import load_prefs
 from .listing import Listing
 from .notify import format_listing, send_notification, send_telegram
+from .score import score_listing
 
 FAKE_LISTING = Listing(
     source="pararius",
@@ -23,8 +29,18 @@ FAKE_LISTING = Listing(
     ],
 )
 
+# Enough of a page for scoring to resolve kale vs. inclusief — the thing the
+# advertised rent alone can't tell us.
+FAKE_PAGE_TEXT = """Prinsegracht 12, Den Haag. Huurprijs € 1.450 per maand kale huur,
+exclusief servicekosten van € 75 per maand. Oppervlakte 75 m². 3 slaapkamers.
+Gestoffeerd, eigen balkon op het zuiden. Beschikbaar per direct. Inkomenseis:
+3x de kale huurprijs bruto per maand. Geen huisdieren toegestaan."""
+
+
 if __name__ == "__main__":
     send_telegram("Hi Caleb, merhaba Selin \U0001F44B\nTesting the Routes API commute lookup with a fake listing.")
 
     commute = commute_highlight(f"{FAKE_LISTING.address}, {FAKE_LISTING.city}")
-    send_notification(format_listing(FAKE_LISTING, commute), FAKE_LISTING.image_urls)
+    score = score_listing(FAKE_LISTING, FAKE_PAGE_TEXT, load_prefs())
+    print(f"score: {score}")  # None means the Claude call failed — see the log line above
+    send_notification(format_listing(FAKE_LISTING, commute, score), FAKE_LISTING.image_urls)
