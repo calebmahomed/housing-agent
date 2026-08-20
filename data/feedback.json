@@ -16,5 +16,17 @@
       "total_monthly": 1015.0
     },
     "reason": "not a fit"
+  },
+  {
+    "decision": "pass",
+    "key": "8aaacba2c039",
+    "listing": {
+      "address": "Van Sijpesteijnkade 5 K",
+      "external_id": "utrecht-3521ah-5-k-van-sijpesteijnkade-fd99d6d593125b88be405f2fecea2324",
+      "size_m2": 68.0,
+      "source": "ikwilhuren",
+      "total_monthly": 214.0
+    },
+    "reason": "too expensive"
   }
 ]
