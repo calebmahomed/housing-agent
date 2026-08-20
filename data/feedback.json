@@ -28,5 +28,17 @@
       "total_monthly": 214.0
     },
     "reason": "too expensive"
+  },
+  {
+    "decision": "pass",
+    "key": "d73feb55d668",
+    "listing": {
+      "address": "Suezkade",
+      "external_id": "e9b7e89cae27",
+      "size_m2": 46.0,
+      "source": "pararius",
+      "total_monthly": 1082.0
+    },
+    "reason": "not a fit"
   }
 ]
