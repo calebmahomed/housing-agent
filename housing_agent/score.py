@@ -41,12 +41,17 @@ SCHEMA = {
 
 
 def _prompt(listing: Listing, page_text: str, prefs: dict) -> str:
+    # Income and ratio are withheld on purpose. Given them, the model kept
+    # asserting a wrong verdict in user-facing text ("income fails the 3x
+    # test... actually income qualifies") — it doesn't need them to judge fit,
+    # and filters.income_shortfall() decides qualification deterministically.
+    visible = {k: v for k, v in prefs.items() if k not in ("annual_income", "income_to_rent_ratio", "assumed_income_to_rent_ratio")}
     return f"""Score this Dutch rental listing for a tenant with these preferences:
 
-{json.dumps(prefs, ensure_ascii=False, indent=2)}
+{json.dumps(visible, ensure_ascii=False, indent=2)}
 {examples()}
-They commute to Singel 542, Amsterdam. Gross annual income €{prefs.get('annual_income')}; \
-most landlords require gross monthly income of {prefs.get('income_to_rent_ratio')}x the rent.
+They commute to Singel 542, Amsterdam. Affordability is already decided elsewhere — \
+score fit, and never state whether they do or don't meet an income requirement.
 
 From the alert/feed:
   address: {listing.address}, {listing.city}
@@ -59,8 +64,7 @@ Listing page text:
 {page_text[:12000]}
 
 Report the income multiple the page explicitly requires, if any — null when it doesn't say, \
-rather than assuming the usual 3x. Don't do the income arithmetic yourself; it's computed \
-separately from that number.
+rather than assuming the usual 3x. Report the number only; do not evaluate it.
 
 Resolve whether the advertised rent is kale huur (excl. servicekosten) or inclusief, and \
 estimate the real all-in monthly cost. Fill in size and bedrooms from the page if the feed \

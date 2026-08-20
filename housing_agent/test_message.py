@@ -8,6 +8,7 @@ state, so once state is warm it sends nothing and exercises nothing.
 from .commute import commute_highlight
 from .config import load_prefs
 from .feedback import key as feedback_key
+from .filters import income_shortfall
 from .listing import Listing
 from .notify import format_listing, send_notification, send_telegram
 from .score import score_listing
@@ -42,13 +43,17 @@ if __name__ == "__main__":
     send_telegram("Hi Caleb, merhaba Selin \U0001F44B\nTesting the Routes API commute lookup with a fake listing.")
 
     commute = commute_highlight(f"{FAKE_LISTING.address}, {FAKE_LISTING.city}")
-    score = score_listing(FAKE_LISTING, FAKE_PAGE_TEXT, load_prefs())
+    prefs = load_prefs()
+    score = score_listing(FAKE_LISTING, FAKE_PAGE_TEXT, prefs)
     print(f"score: {score}")  # None means the Claude call failed — see the log line above
+    total = (score or {}).get("total_monthly") or FAKE_LISTING.total_monthly
+    income_note = income_shortfall(total, prefs, (score or {}).get("stated_income_ratio"))
+    print(f"income: {income_note or 'qualifies'}")
     # keyed so the feedback buttons render: tapping one exercises the whole
     # webhook -> feedback.yml -> commit path. The fake listing isn't in state,
     # so the recorded entry resolves to nothing and examples() skips it.
     send_notification(
-        format_listing(FAKE_LISTING, commute, score),
+        format_listing(FAKE_LISTING, commute, score, income_note),
         FAKE_LISTING.image_urls,
         feedback_key(FAKE_LISTING.source, FAKE_LISTING.external_id),
     )
