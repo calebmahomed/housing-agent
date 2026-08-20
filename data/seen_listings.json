@@ -768,5 +768,33 @@
     "size_m2": 141.0,
     "source": "ikwilhuren",
     "total_monthly": 1350.0
+  },
+  {
+    "address": "Loosduinseweg 81 B",
+    "external_id": "den-haag-2571aa-81-b-loosduinseweg-2b1ca0f82edd58bf18a3f16ff324f0de",
+    "size_m2": 80.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1330.0
+  },
+  {
+    "address": "Pierre van Hauwelaan 140",
+    "external_id": "delft-2625wl-140-pierre-van-hauwelaan-f8ae89d9d73a4b7d3045554364fac6a9",
+    "size_m2": 40.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1153.0
+  },
+  {
+    "address": "Tussenbusstraat 380",
+    "external_id": "utrecht-3534bm-380-tussenbusstraat-09c608199b7cabb2e35a68387a03f8f5",
+    "size_m2": 62.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1062.0
+  },
+  {
+    "address": "Fahrenheitstraat",
+    "external_id": "72d264ef3252",
+    "size_m2": 26.0,
+    "source": "pararius",
+    "total_monthly": 872.0
   }
 ]
