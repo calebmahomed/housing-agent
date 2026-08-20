@@ -747,5 +747,26 @@
     "size_m2": 85.0,
     "source": "ikwilhuren",
     "total_monthly": 1200.0
+  },
+  {
+    "address": "Carnotstraat 151",
+    "external_id": "nijmegen-6533dz-151-carnotstraat-c9d9e3c1d05632013df8dabb1206a860",
+    "size_m2": 93.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1285.0
+  },
+  {
+    "address": "Rooswinkelstate 17",
+    "external_id": "leeuwarden-8925lc-17-rooswinkelstate-c41b93c9f4b086b61f6851185b15eed9",
+    "size_m2": 119.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1350.0
+  },
+  {
+    "address": "Schorsmolen 16",
+    "external_id": "berkel-enschot-5057ag-16-schorsmolen-bbd39df010aa60a044a67671759be4a8",
+    "size_m2": 141.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1350.0
   }
 ]
