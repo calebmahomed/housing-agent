@@ -831,5 +831,12 @@
     "size_m2": 46.0,
     "source": "pararius",
     "total_monthly": 1082.0
+  },
+  {
+    "address": "Loosduinseweg",
+    "external_id": "9bf9cc316205",
+    "size_m2": 80.0,
+    "source": "pararius",
+    "total_monthly": 1330.0
   }
 ]
