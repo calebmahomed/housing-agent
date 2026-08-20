@@ -9,6 +9,26 @@ revisiting. Keep entries short; the detail lives in the linked commit.
 
 ---
 
+## 2026-08-20 — Feedback buttons dispatch a workflow rather than writing state
+Phase 3. 👍/👎 on every alert; 👎 swaps the row for five canned reasons before
+recording, because a bare rejection teaches the scorer nothing and free text
+doesn't get typed on a phone. Decisions land in `data/feedback.json` and become
+few-shot lines in the scoring prompt.
+**The webhook can't write to the repo** — it's a Vercel function with no
+checkout — so a tap dispatches `feedback.yml`, which commits. That reuses the
+`GH_PAT` + dispatch path `/run` already uses instead of adding Vercel KV or a
+database, and keeps one datastore.
+**`feedback.yml` deliberately has no `concurrency:` group.** GitHub keeps only
+one pending run per group, so two quick taps would cancel each other and lose a
+decision. The push-retry loop is what makes concurrent runs safe.
+**Callback data is a 6-byte hash, not the listing id** — Telegram caps
+`callback_data` at 64 bytes. The listing is looked back up from
+`seen_listings.json`, so feedback stores a pointer rather than a copy that could
+drift; entries whose listing has been pruned are skipped rather than crashing.
+**Albums lose their caption to a second message.** `sendMediaGroup` takes no
+`reply_markup`, so a multi-photo alert sends photos uncaptioned and follows with
+the caption carrying the buttons — rather than dropping the extra photos.
+
 ## 2026-08-20 — LLM scoring enabled; `test_message` is now the way to verify it
 `ANTHROPIC_API_KEY` is set, so `score.py` is live (~$2–4/mo at current volume).
 Verified against a fake listing: resolved €1450 kale + €75 servicekosten to

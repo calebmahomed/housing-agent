@@ -1,0 +1,57 @@
+name: feedback
+
+# Dispatched by the Telegram webhook when a 👍/👎 button is tapped. Records the
+# decision to data/feedback.json, which score.py feeds back into the scoring
+# prompt as few-shot examples.
+
+on:
+  workflow_dispatch:
+    inputs:
+      key:
+        description: "Listing key from the button's callback_data"
+        required: true
+      decision:
+        description: "interested | pass"
+        required: true
+      reason:
+        description: "Reason key (price/commute/size/outdoor/other); empty for interested"
+        default: ""
+
+# deliberately no `concurrency:` group — GitHub keeps only one pending run per
+# group, so two quick taps would cancel each other and lose a decision. The
+# push retry below is what makes concurrent runs safe instead.
+permissions:
+  contents: write
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # no pip install: feedback.py is stdlib only, and this runs on every
+      # button tap, so a dependency install would be the whole cost of the job
+      - run: >
+          python -m housing_agent.feedback
+          "${{ inputs.key }}" "${{ inputs.decision }}" "${{ inputs.reason }}"
+
+      # same retry as poll.yml: a tap can land mid-poll, and losing the decision
+      # to a push race means the button silently did nothing
+      - run: |
+          git config user.name "housing-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet && exit 0
+          git commit -m "record feedback [skip ci]"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            echo "push rejected, retrying ($i)..."
+            git pull --rebase
+            sleep $((RANDOM % 5 + 1))
+          done
+          echo "::error::failed to push feedback after retries"
+          exit 1

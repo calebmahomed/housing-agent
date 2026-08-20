@@ -4,8 +4,9 @@ import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from housing_agent import heartbeat as heartbeat_mod
+from housing_agent import feedback, heartbeat as heartbeat_mod, notify
 from housing_agent.notify import send_telegram
+from housing_agent.state import load, save
 
 from housing_agent.config import load_prefs, require_env
 from housing_agent.commute import _parse_duration_seconds, format_minutes, within_commute
@@ -359,6 +360,56 @@ def test_heartbeat_reports_weekly_and_accumulates_alerts_between_runs():
         assert "0 alert(s)" in sent[1] and "8 new listing(s)" in sent[1], sent[1]
     finally:
         heartbeat_mod.send_telegram = send_telegram
+
+
+def test_feedback_key_fits_telegram_callback_data():
+    # callback_data is capped at 64 bytes and carries "f:<key>:interested"
+    k = feedback.key("ikwilhuren", "a-very-long-external-id-" * 5)
+    assert len(f"f:{k}:interested".encode()) <= 64, k
+    assert k == feedback.key("ikwilhuren", "a-very-long-external-id-" * 5), "must be stable"
+    assert k != feedback.key("vesteda", "a-very-long-external-id-" * 5), "must not collide across sources"
+
+
+def test_feedback_records_reasons_and_replaces_on_retap():
+    tmp = Path(tempfile.mkdtemp())
+    feedback.PATH, feedback.SEEN_PATH = str(tmp / "fb.json"), str(tmp / "seen.json")
+    save(feedback.SEEN_PATH, [
+        {"source": "verra", "external_id": "1", "address": "Prinsegracht 12", "size_m2": 75, "total_monthly": 1525},
+    ])
+    k = feedback.key("verra", "1")
+
+    assert feedback.examples() == "", "no feedback yet means no few-shot block"
+
+    feedback.record(k, "pass", feedback.REASONS["price"])
+    assert "passed — too expensive" in feedback.examples()
+    assert "Prinsegracht 12" in feedback.examples() and "€1525" in feedback.examples()
+
+    # changing your mind is a correction, not a second data point
+    feedback.record(k, "interested")
+    assert len(load(feedback.PATH)) == 1
+    assert "interested" in feedback.examples() and "too expensive" not in feedback.examples()
+
+
+def test_feedback_survives_a_listing_missing_from_state():
+    tmp = Path(tempfile.mkdtemp())
+    feedback.PATH, feedback.SEEN_PATH = str(tmp / "fb.json"), str(tmp / "seen.json")
+    feedback.record("deadbeef", "pass", "too small")  # nothing in seen to look up
+    assert feedback.examples() == "", "an unresolvable listing must not crash the prompt"
+
+
+def test_album_sends_buttons_separately_since_media_groups_cannot_carry_them():
+    calls = []
+    original, os.environ["TELEGRAM_CHAT_ID"] = notify._post, "1"
+    notify._post = lambda method, payload: calls.append((method, payload)) or True
+    try:
+        notify.send_notification("caption", ["http://a/1.jpg", "http://a/2.jpg"], key="abc123")
+    finally:
+        notify._post = original
+    methods = [m for m, _ in calls]
+    assert methods == ["sendMediaGroup", "sendMessage"], methods
+    assert "reply_markup" not in calls[0][1], "sendMediaGroup rejects reply_markup"
+    assert calls[1][1]["reply_markup"]["inline_keyboard"][0][0]["callback_data"] == "f:abc123:interested"
+    assert "caption" not in calls[0][1].get("media", [{}])[0], "caption moves to the message with the buttons"
 
 
 if __name__ == "__main__":

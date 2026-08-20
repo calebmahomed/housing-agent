@@ -9,6 +9,7 @@ from typing import Optional
 
 import anthropic
 
+from .feedback import examples
 from .listing import Listing
 
 MODEL = "claude-opus-5"
@@ -39,7 +40,7 @@ def _prompt(listing: Listing, page_text: str, prefs: dict) -> str:
     return f"""Score this Dutch rental listing for a tenant with these preferences:
 
 {json.dumps(prefs, ensure_ascii=False, indent=2)}
-
+{examples()}
 They commute to Singel 542, Amsterdam. Gross annual income €{prefs.get('annual_income')}; \
 most landlords require gross monthly income of {prefs.get('income_to_rent_ratio')}x the rent.
 

@@ -66,23 +66,56 @@ def _post(method: str, payload: dict) -> bool:
     return resp.ok
 
 
-def send_telegram(text: str) -> None:
+def feedback_buttons(key: Optional[str]) -> Optional[dict]:
+    """The 👍/👎 row. The 👎 reason row is built by the webhook when it handles
+    the tap — keep `feedback.REASONS` and the webhook's copy in step."""
+    if not key:
+        return None
+    return {
+        "inline_keyboard": [
+            [
+                {"text": "\U0001F44D Interested", "callback_data": f"f:{key}:interested"},
+                {"text": "\U0001F44E Pass", "callback_data": f"f:{key}:pass"},
+            ]
+        ]
+    }
+
+
+def send_telegram(text: str, reply_markup: Optional[dict] = None) -> None:
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
-    _post("sendMessage", {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True})
+    payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True}
+    if reply_markup:
+        payload["reply_markup"] = reply_markup
+    _post("sendMessage", payload)
 
 
-def send_notification(caption: str, image_urls: Optional[list] = None) -> None:
+def send_notification(caption: str, image_urls: Optional[list] = None, key: Optional[str] = None) -> None:
     """Plain text if there are no images; a photo (or album) with caption otherwise.
     Falls back to plain text if the photo/album send fails, so a bad image URL
-    never silently drops the whole listing."""
+    never silently drops the whole listing.
+
+    `key` attaches the feedback buttons. sendMediaGroup takes no reply_markup —
+    an album therefore goes out uncaptioned and the caption follows as its own
+    message carrying the buttons, rather than dropping the extra photos.
+    """
+    markup = feedback_buttons(key)
     if not image_urls:
-        send_telegram(caption)
+        send_telegram(caption, markup)
         return
 
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
     urls = image_urls[:10]  # Telegram's sendMediaGroup limit
     if len(urls) == 1:
-        ok = _post("sendPhoto", {"chat_id": chat_id, "photo": urls[0], "caption": caption, "parse_mode": "HTML"})
+        payload = {"chat_id": chat_id, "photo": urls[0], "caption": caption, "parse_mode": "HTML"}
+        if markup:
+            payload["reply_markup"] = markup
+        ok = _post("sendPhoto", payload)
+    elif markup:
+        media = [{"type": "photo", "media": url} for url in urls]
+        ok = _post("sendMediaGroup", {"chat_id": chat_id, "media": media})
+        if ok:
+            send_telegram(caption, markup)
+            return
     else:
         media = [
             {"type": "photo", "media": url, **({"caption": caption, "parse_mode": "HTML"} if i == 0 else {})}
@@ -91,4 +124,4 @@ def send_notification(caption: str, image_urls: Optional[list] = None) -> None:
         ok = _post("sendMediaGroup", {"chat_id": chat_id, "media": media})
 
     if not ok:
-        send_telegram(caption)
+        send_telegram(caption, markup)

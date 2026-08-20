@@ -22,7 +22,7 @@ def run(hours: int = 12) -> int:
     for listing in fetch_recent_alert_emails(hours):
         item = prepare(listing, prefs, seen)
         if item:
-            send_notification(item["caption"], item["image_urls"])
+            send_notification(item["caption"], item["image_urls"], item.get("key"))
             sent += 1
 
     save(SEEN_PATH, seen)

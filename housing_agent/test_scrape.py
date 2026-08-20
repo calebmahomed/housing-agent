@@ -36,7 +36,7 @@ def run(hours: int = 720, limit: int = 3) -> int:
             break
         item = prepare(listing, prefs, seen)
         if item:
-            send_notification(item["caption"], item["image_urls"])
+            send_notification(item["caption"], item["image_urls"], item.get("key"))
             sent += 1
 
     if not sent:

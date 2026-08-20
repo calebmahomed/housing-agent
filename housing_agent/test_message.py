@@ -7,6 +7,7 @@ state, so once state is warm it sends nothing and exercises nothing.
 
 from .commute import commute_highlight
 from .config import load_prefs
+from .feedback import key as feedback_key
 from .listing import Listing
 from .notify import format_listing, send_notification, send_telegram
 from .score import score_listing
@@ -43,4 +44,11 @@ if __name__ == "__main__":
     commute = commute_highlight(f"{FAKE_LISTING.address}, {FAKE_LISTING.city}")
     score = score_listing(FAKE_LISTING, FAKE_PAGE_TEXT, load_prefs())
     print(f"score: {score}")  # None means the Claude call failed — see the log line above
-    send_notification(format_listing(FAKE_LISTING, commute, score), FAKE_LISTING.image_urls)
+    # keyed so the feedback buttons render: tapping one exercises the whole
+    # webhook -> feedback.yml -> commit path. The fake listing isn't in state,
+    # so the recorded entry resolves to nothing and examples() skips it.
+    send_notification(
+        format_listing(FAKE_LISTING, commute, score),
+        FAKE_LISTING.image_urls,
+        feedback_key(FAKE_LISTING.source, FAKE_LISTING.external_id),
+    )

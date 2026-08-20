@@ -5,6 +5,7 @@ from .commute import commute_info, within_commute
 from .config import load_prefs, require_env
 from .dedup import is_duplicate
 from .detail_check import contains_exclusion, fetch_page_text
+from .feedback import key as feedback_key
 from .filters import passes_hard_filters
 from .heartbeat import heartbeat
 from .ingest import fetch_new_alert_emails
@@ -43,7 +44,11 @@ def prepare(listing: Listing, prefs: dict, seen: list, seeding: set = frozenset(
         return None
 
     score = score_listing(listing, page_text, prefs) if page_text else None
-    return {"caption": format_listing(listing, commute["text"], score), "image_urls": listing.image_urls}
+    return {
+        "caption": format_listing(listing, commute["text"], score),
+        "image_urls": listing.image_urls,
+        "key": feedback_key(listing.source, listing.external_id),
+    }
 
 
 def main() -> None:
@@ -74,7 +79,7 @@ def main() -> None:
         save(QUEUED_PATH, to_notify)
     else:
         for item in to_notify:
-            send_notification(item["caption"], item["image_urls"])
+            send_notification(item["caption"], item["image_urls"], item.get("key"))
         save(QUEUED_PATH, [])
 
     save(SEEN_PATH, seen)
