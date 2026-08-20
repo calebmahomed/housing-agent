@@ -9,6 +9,21 @@ revisiting. Keep entries short; the detail lives in the linked commit.
 
 ---
 
+## 2026-08-20 — LLM scoring enabled; `test_message` is now the way to verify it
+`ANTHROPIC_API_KEY` is set, so `score.py` is live (~$2–4/mo at current volume).
+Verified against a fake listing: resolved €1450 kale + €75 servicekosten to
+€1525 all-in, which is the extraction the feature exists for.
+**Why the fake listing and not `test_scrape`:** `test_scrape` dedups against
+real state, so once state is warm it sends nothing and therefore exercises
+nothing — it could not have verified this. `test_message.py` (+ `test_message.yml`)
+runs commute, scoring and Telegram against a hardcoded listing, touching no
+state and fetching nothing, so it works regardless of what's in `seen`.
+`test_scrape.yml` was also missing `ANTHROPIC_API_KEY` entirely — the workflow
+we verify with would have silently scored nothing.
+**Known wobble:** the score `reason` contradicted itself once on the income test
+(said "fails" while quoting figures that pass). Cosmetic, in user-facing text;
+revisit the prompt in `_prompt()` if it recurs on real listings.
+
 ## 2026-08-20 — Weekly heartbeat rides the poll run, not its own cron
 Silence was ambiguous: "nothing matched" and "the bot is dead" looked identical,
 and the 60-day scheduled-workflow auto-disable (plan §1, still unconfirmed with
