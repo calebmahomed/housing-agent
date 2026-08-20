@@ -9,6 +9,32 @@ revisiting. Keep entries short; the detail lives in the linked commit.
 
 ---
 
+## 2026-08-20 — Self-contained only: exclude shared kitchens and bathrooms
+Sharing a kitchen or bathroom is a dealbreaker, and these listings were reaching
+us. `onzelfstandig` is the load-bearing pattern — it's the Dutch legal term for
+non-self-contained housing, and it can't false-positive on the good case because
+the opposite term is `zelfstandige woonruimte`, which the pattern doesn't match.
+**The room list is deliberately narrow.** A bare "gedeeld" would have dropped
+half the market: shared gardens, entrances and bike storage are normal in any
+Dutch apartment block. Only keuken/badkamer/douche/toilet/sanitair count, and a
+test pins both directions so a future widening can't quietly re-introduce that.
+
+## 2026-08-20 — ikwilhuren's 403 was a domain move, not an anti-bot block
+The site started 301ing `www.ikwilhuren.nu` -> apex and moved behind Cloudflare
+on 2026-08-20, and the scrape started returning 403. It looked like a datacenter
+IP block, which would have meant reaching for Playwright — the workaround
+DECISIONS says not to copy without a conversation. It wasn't: pointing
+`IKWILHUREN_BASE` at the apex fixed it outright, verified by a CI run with no
+error line. robots.txt still says `Disallow:` (allow all).
+**Diagnose the redirect before assuming the block.** Testing bot vs browser UA
+from a residential IP is what ruled out fingerprinting; the 301 on `robots.txt`
+is what gave it away.
+**Second bug behind the first:** the cards' `src` still points at
+`//*.static.nbo.nl`, a CDN that no longer resolves, so Telegram rejected every
+photo with "wrong type of the web page content" and alerts silently fell back to
+text. `srcset` carries working site-relative paths — `_ikwilhuren_image()` now
+prefers the widest of those. This was invisible while the source was 403ing.
+
 ## 2026-08-20 — Only a *stated* 3x qualifies us; silence means assume 3.5x
 `income_to_rent_ratio: 3` was applied to every listing, which quietly assumed
 the friendliest requirement a landlord might have. We only actually qualify on

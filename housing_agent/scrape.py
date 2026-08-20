@@ -170,8 +170,33 @@ IKW_FIELDS = {
     "size": re.compile(r"<span>(\d+)\s*m<sup>2</sup></span>"),
     "beds": re.compile(r"<span>(\d+)\s*slaapkamers?\s*</span>"),
     "days": re.compile(r'title="Sinds ([\d.]+) dagen online"'),
+    # The card's `src` still points at //*.static.nbo.nl, a CDN that stopped
+    # resolving around 2026-08-20 — Telegram rejects those with "wrong type of
+    # the web page content". srcset carries site-relative paths that work, so
+    # prefer it and keep src only as a fallback.
+    "srcset": re.compile(r'srcset="([^"]+)"', re.S),
     "img": re.compile(r"src='(//[^']+\.jpg[^']*)'"),
 }
+
+
+def _ikwilhuren_image(card: str) -> Optional[str]:
+    """Largest srcset candidate, absolute. Falls back to the card's `src`, which
+    points at a CDN that no longer resolves — so a listing whose markup lacks a
+    srcset degrades to no photo rather than to a broken one."""
+    m = IKW_FIELDS["srcset"].search(card)
+    if m:
+        widest, best = 0, None
+        for candidate in m.group(1).split(","):
+            parts = candidate.split()
+            if not parts:
+                continue
+            width = int(parts[1].rstrip("w")) if len(parts) > 1 and parts[1].rstrip("w").isdigit() else 0
+            if width >= widest:
+                widest, best = width, parts[0]
+        if best:
+            return best if best.startswith("http") else IKWILHUREN_BASE + best
+    src = IKW_FIELDS["img"].search(card)
+    return "https:" + src.group(1) if src else None
 
 
 def _parse_ikwilhuren_card(card: str, max_age_hours: float) -> Optional[Listing]:
@@ -192,7 +217,8 @@ def _parse_ikwilhuren_card(card: str, max_age_hours: float) -> Optional[Listing]
     # 528", "Eengezinswoning Schorsmolen 27". Match the type by its suffix
     # rather than listing every compound Dutch word for a home.
     address = TYPE_PREFIX.sub("", title).strip()
-    size, beds, img = grab("size"), grab("beds"), grab("img")
+    size, beds = grab("size"), grab("beds")
+    image = _ikwilhuren_image(card)
     return Listing(
         source="ikwilhuren",
         external_id=href.strip("/").split("/")[-1],
@@ -203,7 +229,7 @@ def _parse_ikwilhuren_card(card: str, max_age_hours: float) -> Optional[Listing]
         size_m2=float(size) if size else None,
         bedrooms=int(beds) if beds else None,
         description=title,
-        image_urls=["https:" + img] if img else [],
+        image_urls=[image] if image else [],
         raw={"postal_code": place.group(1), "days_online": days},
     )
 

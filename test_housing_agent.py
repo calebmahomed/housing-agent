@@ -22,7 +22,7 @@ from housing_agent.ingest import _source_for, extract_image_urls, parse_funda, p
 from housing_agent.listing import Listing
 from housing_agent.notify import format_listing
 from housing_agent.quiet_hours import in_quiet_hours
-from housing_agent.scrape import _parse_ikwilhuren_card, _to_listing
+from housing_agent.scrape import _ikwilhuren_image, _parse_ikwilhuren_card, _to_listing
 
 IKWILHUREN_CARD = """<div class="card card-woning shadow-sm">
 <div class="card-img-top"><picture><img src='//d.static.nbo.nl/media/6f/abc/768x510/thumb.jpg' alt="x"/></picture></div>
@@ -360,6 +360,21 @@ def test_heartbeat_reports_weekly_and_accumulates_alerts_between_runs():
         assert "0 alert(s)" in sent[1] and "8 new listing(s)" in sent[1], sent[1]
     finally:
         heartbeat_mod.send_telegram = send_telegram
+
+
+def test_ikwilhuren_prefers_srcset_over_the_dead_cdn_in_src():
+    # the card's src points at //d.static.nbo.nl, which stopped resolving on
+    # 2026-08-20 — Telegram rejected those with "wrong type of the web page
+    # content" and every alert silently lost its photo
+    card = """<div class="card card-woning">
+    <img srcset="/media/6f/abc/394x262/thumb.jpg 420w,
+                 /media/6f/abc/576x383/thumb.jpg 576w"
+         src='//d.static.nbo.nl/media/6f/abc/768x510/thumb.jpg'></div>"""
+    assert _ikwilhuren_image(card) == "https://ikwilhuren.nu/media/6f/abc/576x383/thumb.jpg"
+
+    # no srcset: fall back to src rather than dropping the listing
+    assert _ikwilhuren_image(IKWILHUREN_CARD) == "https://d.static.nbo.nl/media/6f/abc/768x510/thumb.jpg"
+    assert _ikwilhuren_image('<div class="card card-woning">no image</div>') is None
 
 
 def test_shared_kitchen_or_bathroom_is_excluded():
