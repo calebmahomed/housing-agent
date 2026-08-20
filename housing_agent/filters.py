@@ -1,5 +1,27 @@
+from typing import Optional
+
 from .detail_check import contains_exclusion
 from .listing import Listing
+
+
+def income_shortfall(total_monthly: float, prefs: dict, stated_ratio: Optional[float] = None) -> Optional[str]:
+    """Whether we'd clear the landlord's income test. None means we would.
+
+    `stated_ratio` is what the listing page actually asks for; where the page is
+    silent we assume something stricter, because assuming the friendliest number
+    is how you end up applying for flats you were never eligible for.
+
+    Warns, never drops. The assumed ratio is a guess about an unstated rule, and
+    dropping on a guess is how the city whitelist used to hide the listings that
+    suited us best.
+    """
+    ratio = stated_ratio or prefs.get("assumed_income_to_rent_ratio", 3.5)
+    needed = total_monthly * ratio
+    monthly_income = prefs["annual_income"] / 12
+    if monthly_income >= needed:
+        return None
+    basis = f"{ratio:g}x stated" if stated_ratio else f"{ratio:g}x assumed, not stated"
+    return f"needs €{needed:.0f}/mo gross ({basis}); you have €{monthly_income:.0f}"
 
 
 def max_affordable_rent(prefs: dict) -> float:

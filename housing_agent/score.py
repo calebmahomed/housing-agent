@@ -28,10 +28,14 @@ SCHEMA = {
             "type": ["number", "null"],
             "description": "Best estimate of all-in monthly cost, null if the page doesn't say",
         },
+        "stated_income_ratio": {
+            "type": ["number", "null"],
+            "description": "Income multiple the page explicitly requires (e.g. 3 for '3x de kale huur', 3.5, 4). null if the page never states one — do not infer it.",
+        },
         "size_m2": {"type": ["number", "null"]},
         "bedrooms": {"type": ["integer", "null"]},
     },
-    "required": ["score", "reason", "rent_basis", "total_monthly", "size_m2", "bedrooms"],
+    "required": ["score", "reason", "rent_basis", "total_monthly", "stated_income_ratio", "size_m2", "bedrooms"],
     "additionalProperties": False,
 }
 
@@ -53,6 +57,10 @@ From the alert/feed:
 
 Listing page text:
 {page_text[:12000]}
+
+Report the income multiple the page explicitly requires, if any — null when it doesn't say, \
+rather than assuming the usual 3x. Don't do the income arithmetic yourself; it's computed \
+separately from that number.
 
 Resolve whether the advertised rent is kale huur (excl. servicekosten) or inclusief, and \
 estimate the real all-in monthly cost. Fill in size and bedrooms from the page if the feed \

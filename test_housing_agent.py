@@ -17,7 +17,7 @@ import requests
 import yaml
 
 from housing_agent.detail_check import _strip_html, contains_exclusion, contains_excluded_phrase
-from housing_agent.filters import max_affordable_rent, passes_hard_filters
+from housing_agent.filters import income_shortfall, max_affordable_rent, passes_hard_filters
 from housing_agent.ingest import _source_for, extract_image_urls, parse_funda, parse_pararius
 from housing_agent.listing import Listing
 from housing_agent.notify import format_listing
@@ -360,6 +360,28 @@ def test_heartbeat_reports_weekly_and_accumulates_alerts_between_runs():
         assert "0 alert(s)" in sent[1] and "8 new listing(s)" in sent[1], sent[1]
     finally:
         heartbeat_mod.send_telegram = send_telegram
+
+
+def test_income_test_trusts_a_stated_ratio_and_assumes_stricter_without_one():
+    prefs = {"annual_income": 55000.0, "assumed_income_to_rent_ratio": 3.5}  # €4583/mo
+
+    # a page that says 3x qualifies us; the same rent unstated does not
+    assert income_shortfall(1350, prefs, stated_ratio=3) is None
+    unstated = income_shortfall(1350, prefs, stated_ratio=None)
+    assert unstated and "3.5x assumed, not stated" in unstated, unstated
+    assert "€4725" in unstated and "€4583" in unstated, unstated
+
+    # a stated ratio stricter than the assumption is used as given, not floored
+    assert "4x stated" in income_shortfall(1350, prefs, stated_ratio=4)
+
+    # cheap enough to clear even the assumption: no warning at all
+    assert income_shortfall(1200, prefs, stated_ratio=None) is None
+
+    # the warning is advisory — nothing here may drop a listing
+    assert passes_hard_filters(
+        Listing(source="verra", external_id="1", url="u", address="a", city="c", rent=1350),
+        {"annual_income": 55000.0, "income_to_rent_ratio": 3, "max_rent": 1400},
+    )
 
 
 def test_feedback_key_fits_telegram_callback_data():

@@ -6,7 +6,7 @@ from .config import load_prefs, require_env
 from .dedup import is_duplicate
 from .detail_check import contains_exclusion, fetch_page_text
 from .feedback import key as feedback_key
-from .filters import passes_hard_filters
+from .filters import income_shortfall, passes_hard_filters
 from .heartbeat import heartbeat
 from .ingest import fetch_new_alert_emails
 from .listing import Listing
@@ -44,8 +44,12 @@ def prepare(listing: Listing, prefs: dict, seen: list, seeding: set = frozenset(
         return None
 
     score = score_listing(listing, page_text, prefs) if page_text else None
+    # the scored total_monthly is the real all-in figure where the page gave us
+    # one; the advertised rent understates it whenever servicekosten are extra
+    total = (score or {}).get("total_monthly") or listing.total_monthly
+    income_note = income_shortfall(total, prefs, (score or {}).get("stated_income_ratio"))
     return {
-        "caption": format_listing(listing, commute["text"], score),
+        "caption": format_listing(listing, commute["text"], score, income_note),
         "image_urls": listing.image_urls,
         "key": feedback_key(listing.source, listing.external_id),
     }

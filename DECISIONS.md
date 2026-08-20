@@ -9,6 +9,27 @@ revisiting. Keep entries short; the detail lives in the linked commit.
 
 ---
 
+## 2026-08-20 — Only a *stated* 3x qualifies us; silence means assume 3.5x
+`income_to_rent_ratio: 3` was applied to every listing, which quietly assumed
+the friendliest requirement a landlord might have. We only actually qualify on
+3x when the page says 3x; where it's silent the requirement could well be
+stricter, and applying for something we were never eligible for is the same
+wasted effort `max_rent` exists to avoid.
+`assumed_income_to_rent_ratio: 3.5` — at €55k gross that makes **€1309 the real
+ceiling, not max_rent's €1400**. Chosen over 4x (€1146) because 4x hides most of
+the €1150–1400 band; revisit at ~10 tapped decisions and move to 4 if rejections
+cluster there with no stated ratio.
+**Warns, never drops.** The assumed ratio is a guess about an unstated rule, and
+dropping on a guess is exactly how the old city whitelist hid the listings that
+suited us best. `income_shortfall()` returns a caption line; hard filters are
+untouched and still use the optimistic 3x.
+**The ratio is extracted by the LLM, not a regex** (`stated_income_ratio` in the
+score schema) — Dutch phrasings vary too much ("3x de kale huur", "3 keer",
+"inkomenseis 3,5x"), and the scoring call already has the page text, so it costs
+nothing extra. The prompt also now tells the model *not* to do the arithmetic:
+it was contradicting itself mid-sentence in user-facing text ("income fails the
+3x test... actually income qualifies"). Arithmetic in code, judgment in the model.
+
 ## 2026-08-20 — Feedback buttons dispatch a workflow rather than writing state
 Phase 3. 👍/👎 on every alert; 👎 swaps the row for five canned reasons before
 recording, because a bare rejection teaches the scorer nothing and free text

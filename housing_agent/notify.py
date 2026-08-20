@@ -23,7 +23,12 @@ def source_badge(source: str) -> str:
     return f"\U0001f534 <b>DIRECT — {escape(name)}</b>"
 
 
-def format_listing(listing: Listing, commute: Optional[str] = None, score: Optional[dict] = None) -> str:
+def format_listing(
+    listing: Listing,
+    commute: Optional[str] = None,
+    score: Optional[dict] = None,
+    income_note: Optional[str] = None,
+) -> str:
     address = escape(f"{listing.address}, {listing.city}")
     rent = (score or {}).get("total_monthly") or listing.total_monthly
     basis = {"kale": " excl. servicekosten", "inclusief": " all-in"}.get((score or {}).get("rent_basis"), "")
@@ -38,6 +43,8 @@ def format_listing(listing: Listing, commute: Optional[str] = None, score: Optio
         text += "  ·  " + " · ".join(bits)
     if commute:
         text += f"\n{escape(commute)}"
+    if income_note:
+        text += f"\n\U000026A0\U0000FE0F <b>Income test:</b> {escape(income_note)}"
     if score:
         text += f"\n<b>{score['score']}/10</b> — {escape(score['reason'])}"
     return text

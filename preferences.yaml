@@ -10,6 +10,14 @@ max_commute_minutes: 90
 # annual_income is NOT here on purpose — this repo is public. It comes from the
 # ANNUAL_INCOME GitHub Actions secret via config.load_prefs().
 income_to_rent_ratio: 3  # landlords typically require gross monthly income >= 3x rent
+# What to assume when a listing page doesn't state its income requirement. We
+# only get to use the friendly 3x when the page explicitly says 3x; silence
+# means it could well be stricter, and applying for something we were never
+# eligible for is the same wasted effort max_rent exists to avoid.
+# At €55k gross this makes €1309 the real ceiling rather than max_rent's €1400.
+# Set to 3.5 on 2026-08-20; revisit at ~10 tapped decisions — if rejections
+# cluster in €1300-1400 with no stated ratio, move to 4.
+assumed_income_to_rent_ratio: 3.5
 # hard ceiling on total_monthly, binds before the €1528 income cap. Set to 1400
 # on 2026-08-19 after a rejection at €1450 — at that level we're competing with
 # applicants the landlord scores higher, so it's wasted effort rather than a
