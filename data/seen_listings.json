@@ -733,5 +733,12 @@
     "size_m2": 68.0,
     "source": "ikwilhuren",
     "total_monthly": 1313.0
+  },
+  {
+    "address": "Makelaarstraat 38",
+    "external_id": "19686",
+    "size_m2": 82.0,
+    "source": "vesteda",
+    "total_monthly": 1152.55
   }
 ]
