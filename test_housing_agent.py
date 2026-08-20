@@ -265,7 +265,7 @@ def test_ikwilhuren_card_parses_real_markup():
     assert listing.city == "Amsterdam"
     assert listing.rent == 1780.0
     assert listing.size_m2 == 99 and listing.bedrooms == 3
-    assert listing.url == "https://www.ikwilhuren.nu/object/amsterdam-1067cp-528-dr-h-colijnstraat-e908b12c/"
+    assert listing.url == "https://ikwilhuren.nu/object/amsterdam-1067cp-528-dr-h-colijnstraat-e908b12c/"
     assert listing.image_urls == ["https://d.static.nbo.nl/media/6f/abc/768x510/thumb.jpg"]
 
 
