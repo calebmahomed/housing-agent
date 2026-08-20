@@ -740,5 +740,12 @@
     "size_m2": 82.0,
     "source": "vesteda",
     "total_monthly": 1152.55
+  },
+  {
+    "address": "Niek Engelschmanlaan 26",
+    "external_id": "nijmegen-6532cs-26-niek-engelschmanlaan-a72f75adc17a978d8cb4470f8037198c",
+    "size_m2": 85.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1200.0
   }
 ]
