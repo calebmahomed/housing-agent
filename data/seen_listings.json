@@ -726,5 +726,12 @@
     "size_m2": 112.0,
     "source": "ikwilhuren",
     "total_monthly": 1180.0
+  },
+  {
+    "address": "Laan Op Zuid 1465",
+    "external_id": "rotterdam-3072db-1465-laan-op-zuid-584d9ba6863941b27deeb1f12acb2331",
+    "size_m2": 68.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1313.0
   }
 ]
