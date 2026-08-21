@@ -1041,5 +1041,12 @@
     "size_m2": 53.0,
     "source": "pararius",
     "total_monthly": 1147.0
+  },
+  {
+    "address": "Doelensteeg",
+    "external_id": "cb3fe94fc20a",
+    "size_m2": 74.0,
+    "source": "pararius",
+    "total_monthly": 1229.0
   }
 ]
