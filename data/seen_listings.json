@@ -999,5 +999,12 @@
     "size_m2": 60.0,
     "source": "ikwilhuren",
     "total_monthly": 1181.0
+  },
+  {
+    "address": "Anne Frankstraat",
+    "external_id": "4f5527dc0bb0",
+    "size_m2": 60.0,
+    "source": "pararius",
+    "total_monthly": 1181.0
   }
 ]
