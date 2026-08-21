@@ -866,5 +866,12 @@
     "size_m2": 51.0,
     "source": "vesteda",
     "total_monthly": 1022.6
+  },
+  {
+    "address": "Velperweg 49 116",
+    "external_id": "arnhem-6824bg-49-116-velperweg-07fc7996358303377e8ab86f303fc9cb",
+    "size_m2": 24.0,
+    "source": "ikwilhuren",
+    "total_monthly": 743.0
   }
 ]
