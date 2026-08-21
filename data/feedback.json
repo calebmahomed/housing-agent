@@ -76,5 +76,17 @@
       "total_monthly": 70.0
     },
     "reason": "too expensive"
+  },
+  {
+    "decision": "interested",
+    "key": "56510ddf1a39",
+    "listing": {
+      "address": "Kaap Hoorndreef 56 A",
+      "external_id": "utrecht-3563av-56-a-kaap-hoorndreef-e02daaaf41360d3a1b2b2b99b865fcb2",
+      "size_m2": null,
+      "source": "ikwilhuren",
+      "total_monthly": 1029.0
+    },
+    "reason": ""
   }
 ]
