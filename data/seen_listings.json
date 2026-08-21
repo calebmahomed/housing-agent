@@ -894,5 +894,110 @@
     "size_m2": 55.0,
     "source": "pararius",
     "total_monthly": 992.0
+  },
+  {
+    "address": "Friesestraatweg 229 7",
+    "external_id": "groningen-9743ae-229-7-friesestraatweg-1c2918d25742ab92b335e355b3e16686",
+    "size_m2": 88.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1400.0
+  },
+  {
+    "address": "Hanzeplein 60",
+    "external_id": "groningen-9713gw-60-hanzeplein-cdce9ad65953b0409dbccac8c0465d83",
+    "size_m2": 92.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1235.0
+  },
+  {
+    "address": "Friesestraatweg 227 1",
+    "external_id": "groningen-9743ae-227-1-friesestraatweg-06a684ee9dc1c77df0d523e1ef68ce09",
+    "size_m2": 60.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1120.0
+  },
+  {
+    "address": "Friesestraatweg 229 46",
+    "external_id": "groningen-9743ae-229-46-friesestraatweg-6c592aa0e94c67434c2ae7f4f9a35dc2",
+    "size_m2": 62.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1135.0
+  },
+  {
+    "address": "Friesestraatweg 225 4",
+    "external_id": "groningen-9743ae-225-4-friesestraatweg-af2527d186b76d3ad91cf95fd64dc5c0",
+    "size_m2": 87.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1365.0
+  },
+  {
+    "address": "Hofstraat 30",
+    "external_id": "deurne-5751az-30-hofstraat-93f5b0d3452b3608e950697c8c1a77d8",
+    "size_m2": 73.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1050.0
+  },
+  {
+    "address": "Elias Beeckmanlaan 88",
+    "external_id": "ede-6711vs-88-elias-beeckmanlaan-ccc2b0c86df6b46458dcbfdd087b78c2",
+    "size_m2": 84.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1298.0
+  },
+  {
+    "address": "Hoogtestraat 26",
+    "external_id": "tilburg-5021pj-26-hoogtestraat-49dd14a36157d26b6a43469bdf788181",
+    "size_m2": 90.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1400.0
+  },
+  {
+    "address": "Juweellaan 22",
+    "external_id": "zoetermeer-2719bg-22-juweellaan-02ee25ee7ff65d0cdd9162c15e173ac4",
+    "size_m2": 82.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1146.0
+  },
+  {
+    "address": "De Hoop 43",
+    "external_id": "zwolle-8044vx-43-de-hoop-115bf6eca94da0c18f6f6c99cc2530ba",
+    "size_m2": 117.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1393.0
+  },
+  {
+    "address": "Ruinerwoldstraat 28",
+    "external_id": "tilburg-5035db-28-ruinerwoldstraat-8446e7237477fed3a6883c1ca89a2990",
+    "size_m2": null,
+    "source": "ikwilhuren",
+    "total_monthly": 1169.0
+  },
+  {
+    "address": "Kaap Hoorndreef 56 A",
+    "external_id": "utrecht-3563av-56-a-kaap-hoorndreef-e02daaaf41360d3a1b2b2b99b865fcb2",
+    "size_m2": null,
+    "source": "ikwilhuren",
+    "total_monthly": 1029.0
+  },
+  {
+    "address": "'s-gravelandseweg 729",
+    "external_id": "schiedam-3119xt-729-s-gravelandseweg-6d26dc183581b3c5b87b321ce4ed71de",
+    "size_m2": 70.0,
+    "source": "ikwilhuren",
+    "total_monthly": 70.0
+  },
+  {
+    "address": "Frits Drijverstraat 1 F",
+    "external_id": "deventer-7416cd-1-f-frits-drijverstraat-e3ec0d5dbba0b15301095ec123d4c19c",
+    "size_m2": 70.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1214.0
+  },
+  {
+    "address": "Anne Frankstraat 21",
+    "external_id": "s-gravenhage-2548la-21-anne-frankstraat-6e182c9d32b55164876e8bcf26cf15f8",
+    "size_m2": 60.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1181.0
   }
 ]
