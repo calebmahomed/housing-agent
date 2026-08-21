@@ -88,5 +88,17 @@
       "total_monthly": 1029.0
     },
     "reason": ""
+  },
+  {
+    "decision": "interested",
+    "key": "d4302eb230c5",
+    "listing": {
+      "address": "Van Sijpesteijnkade 193",
+      "external_id": "utrecht-3521ah-193-van-sijpesteijnkade-f5f7b583909607cece7ed73c43dadc50",
+      "size_m2": 50.0,
+      "source": "ikwilhuren",
+      "total_monthly": 1249.0
+    },
+    "reason": ""
   }
 ]
