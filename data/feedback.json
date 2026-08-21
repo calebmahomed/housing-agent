@@ -40,5 +40,17 @@
       "total_monthly": 1082.0
     },
     "reason": "not a fit"
+  },
+  {
+    "decision": "interested",
+    "key": "b1f0211176cd",
+    "listing": {
+      "address": "Ametisthorst",
+      "external_id": "3cadf0865e70",
+      "size_m2": 72.0,
+      "source": "pararius",
+      "total_monthly": 1166.0
+    },
+    "reason": ""
   }
 ]
