@@ -852,5 +852,12 @@
     "size_m2": 60.0,
     "source": "vesteda",
     "total_monthly": 1173.15
+  },
+  {
+    "address": "Ametisthorst",
+    "external_id": "3cadf0865e70",
+    "size_m2": 72.0,
+    "source": "pararius",
+    "total_monthly": 1166.0
   }
 ]
