@@ -64,5 +64,17 @@
       "total_monthly": 992.0
     },
     "reason": "not a fit"
+  },
+  {
+    "decision": "pass",
+    "key": "3c09ff33034e",
+    "listing": {
+      "address": "'s-gravelandseweg 729",
+      "external_id": "schiedam-3119xt-729-s-gravelandseweg-6d26dc183581b3c5b87b321ce4ed71de",
+      "size_m2": 70.0,
+      "source": "ikwilhuren",
+      "total_monthly": 70.0
+    },
+    "reason": "too expensive"
   }
 ]
