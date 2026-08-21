@@ -52,5 +52,17 @@
       "total_monthly": 1166.0
     },
     "reason": ""
+  },
+  {
+    "decision": "pass",
+    "key": "ef54d0683e18",
+    "listing": {
+      "address": "Lambertushof",
+      "external_id": "b677c87b40e5",
+      "size_m2": 55.0,
+      "source": "pararius",
+      "total_monthly": 992.0
+    },
+    "reason": "not a fit"
   }
 ]
