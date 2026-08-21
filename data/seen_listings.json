@@ -838,5 +838,19 @@
     "size_m2": 80.0,
     "source": "pararius",
     "total_monthly": 1330.0
+  },
+  {
+    "address": "Admiraal De Ruyterweg 135",
+    "external_id": "1833",
+    "size_m2": 63.0,
+    "source": "vesteda",
+    "total_monthly": 1152.55
+  },
+  {
+    "address": "Melkwegstraat 53 D",
+    "external_id": "181866",
+    "size_m2": 60.0,
+    "source": "vesteda",
+    "total_monthly": 1173.15
   }
 ]
