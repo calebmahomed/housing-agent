@@ -1006,5 +1006,40 @@
     "size_m2": 60.0,
     "source": "pararius",
     "total_monthly": 1181.0
+  },
+  {
+    "address": "Haendelplein 101",
+    "external_id": "30519",
+    "size_m2": 71.0,
+    "source": "vesteda",
+    "total_monthly": 1173.15
+  },
+  {
+    "address": "Hodenpijlstraat 131",
+    "external_id": "zoetermeer-2729jd-131-hodenpijlstraat-c94875080a43e52a1d4c05bfb589d15e",
+    "size_m2": 72.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1114.0
+  },
+  {
+    "address": "Lange Maat 147",
+    "external_id": "westervoort-6932ac-147-lange-maat-12e2a848aa65eab343899fa0ea219c02",
+    "size_m2": 139.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1290.0
+  },
+  {
+    "address": "Weversplaats 89",
+    "external_id": "s-hertogenbosch-5211hd-89-weversplaats-741593cac244ce6cc640828f07ad09d2",
+    "size_m2": 57.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1200.0
+  },
+  {
+    "address": "Pelmolen",
+    "external_id": "2deb4c3759c2",
+    "size_m2": 53.0,
+    "source": "pararius",
+    "total_monthly": 1147.0
   }
 ]
