@@ -100,5 +100,17 @@
       "total_monthly": 1249.0
     },
     "reason": ""
+  },
+  {
+    "decision": "pass",
+    "key": "49cbab7b3890",
+    "listing": {
+      "address": "Pelmolen",
+      "external_id": "2deb4c3759c2",
+      "size_m2": 53.0,
+      "source": "pararius",
+      "total_monthly": 1147.0
+    },
+    "reason": "not a fit"
   }
 ]
