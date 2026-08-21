@@ -880,5 +880,19 @@
     "size_m2": 58.0,
     "source": "vesteda",
     "total_monthly": 1173.15
+  },
+  {
+    "address": "Helenastraat 89",
+    "external_id": "33367",
+    "size_m2": 75.0,
+    "source": "vesteda",
+    "total_monthly": 1214.31
+  },
+  {
+    "address": "Lambertushof",
+    "external_id": "b677c87b40e5",
+    "size_m2": 55.0,
+    "source": "pararius",
+    "total_monthly": 992.0
   }
 ]
