@@ -859,5 +859,12 @@
     "size_m2": 72.0,
     "source": "pararius",
     "total_monthly": 1166.0
+  },
+  {
+    "address": "Jozefhof 402",
+    "external_id": "50530",
+    "size_m2": 51.0,
+    "source": "vesteda",
+    "total_monthly": 1022.6
   }
 ]
