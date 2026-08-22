@@ -1048,5 +1048,12 @@
     "size_m2": 74.0,
     "source": "pararius",
     "total_monthly": 1229.0
+  },
+  {
+    "address": "Burgemeester Mooijstraat",
+    "external_id": "2ff160ab5fcf",
+    "size_m2": 79.0,
+    "source": "pararius",
+    "total_monthly": 1166.0
   }
 ]
