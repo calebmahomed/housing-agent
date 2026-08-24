@@ -1083,5 +1083,19 @@
     "size_m2": 86.0,
     "source": "ikwilhuren",
     "total_monthly": 1250.0
+  },
+  {
+    "address": "Vrijstaathof",
+    "external_id": "a26612073781",
+    "size_m2": 28.0,
+    "source": "pararius",
+    "total_monthly": 910.0
+  },
+  {
+    "address": "Archimedesstraat",
+    "external_id": "e8d816cddbca",
+    "size_m2": 37.0,
+    "source": "pararius",
+    "total_monthly": 946.0
   }
 ]
