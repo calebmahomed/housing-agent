@@ -1097,5 +1097,12 @@
     "size_m2": 37.0,
     "source": "pararius",
     "total_monthly": 946.0
+  },
+  {
+    "address": "Stationspark 180",
+    "external_id": "roermond-6042ax-180-stationspark-d39c903e9046dfea593f4c9befaf8a5a",
+    "size_m2": 77.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1055.0
   }
 ]
