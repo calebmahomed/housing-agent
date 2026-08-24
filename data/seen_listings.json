@@ -1062,5 +1062,12 @@
     "size_m2": 91.0,
     "source": "pararius",
     "total_monthly": 1100.0
+  },
+  {
+    "address": "Banierstraat 23",
+    "external_id": "prinsenbeek-4841ve-23-banierstraat-8251b86593314cc6254cc5f55c93df0a",
+    "size_m2": 92.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1250.0
   }
 ]
