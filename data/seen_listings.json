@@ -1132,5 +1132,33 @@
     "size_m2": null,
     "source": "ikwilhuren",
     "total_monthly": 115.0
+  },
+  {
+    "address": "Delflandplein 44",
+    "external_id": "delft-2624gd-44-delflandplein-d4a188d605ea6364d1e4b836af1f4633",
+    "size_m2": 64.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1007.0
+  },
+  {
+    "address": "Delflandplein 376",
+    "external_id": "delft-2624gd-376-delflandplein-cd27d6aa02ee7ea95991deee51647616",
+    "size_m2": 29.0,
+    "source": "ikwilhuren",
+    "total_monthly": 830.0
+  },
+  {
+    "address": "Jean Monnetring 161",
+    "external_id": "vlaardingen-3137dc-161-jean-monnetring-0e949644d5c3299cd3df78f67ee9601b",
+    "size_m2": 93.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1009.0
+  },
+  {
+    "address": "Paviljoensgracht",
+    "external_id": "404fad5f0376",
+    "size_m2": 76.0,
+    "source": "pararius",
+    "total_monthly": 1193.0
   }
 ]
