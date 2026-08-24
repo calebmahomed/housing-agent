@@ -1069,5 +1069,19 @@
     "size_m2": 92.0,
     "source": "ikwilhuren",
     "total_monthly": 1250.0
+  },
+  {
+    "address": "Guido Gezellestraat 107",
+    "external_id": "voorburg-2274ex-107-guido-gezellestraat-d3f4fb1dfb4277029ab24358ec466342",
+    "size_m2": 77.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1275.0
+  },
+  {
+    "address": "Zandschel 13",
+    "external_id": "valkenswaard-5554bh-13-zandschel-f1505a272043481b21515b5b62cd63f5",
+    "size_m2": 86.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1250.0
   }
 ]
