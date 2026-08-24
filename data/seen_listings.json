@@ -1055,5 +1055,12 @@
     "size_m2": 79.0,
     "source": "pararius",
     "total_monthly": 1166.0
+  },
+  {
+    "address": "Pilatus",
+    "external_id": "d7d2a336ad06",
+    "size_m2": 91.0,
+    "source": "pararius",
+    "total_monthly": 1100.0
   }
 ]
