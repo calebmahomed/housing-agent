@@ -1104,5 +1104,33 @@
     "size_m2": 77.0,
     "source": "ikwilhuren",
     "total_monthly": 1055.0
+  },
+  {
+    "address": "Leemhorststraat 125",
+    "external_id": "181858",
+    "size_m2": 60.0,
+    "source": "vesteda",
+    "total_monthly": 1193.76
+  },
+  {
+    "address": "Paviljoensgracht 1 E2",
+    "external_id": "den-haag-2512bl-1-e2-paviljoensgracht-125bfd22699bd3d51d32388c192d5be0",
+    "size_m2": 76.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1194.0
+  },
+  {
+    "address": "Van Sijpesteijnkade 331",
+    "external_id": "utrecht-3521ah-331-van-sijpesteijnkade-0607186eac78f050cfdb533b19bd5f52",
+    "size_m2": 44.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1235.0
+  },
+  {
+    "address": "Twellosebeeklaan 491",
+    "external_id": "utrecht-3521ds-491-twellosebeeklaan-3437fec46685ba2159f8dd3c2fac3904",
+    "size_m2": null,
+    "source": "ikwilhuren",
+    "total_monthly": 115.0
   }
 ]
