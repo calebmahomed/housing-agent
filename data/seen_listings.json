@@ -1188,5 +1188,12 @@
     "size_m2": 60.0,
     "source": "pararius",
     "total_monthly": 1125.0
+  },
+  {
+    "address": "Steenhouwerskade 134",
+    "external_id": "15151",
+    "size_m2": 84.0,
+    "source": "vesteda",
+    "total_monthly": 1145.69
   }
 ]
