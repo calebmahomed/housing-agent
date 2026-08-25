@@ -1195,5 +1195,19 @@
     "size_m2": 84.0,
     "source": "vesteda",
     "total_monthly": 1145.69
+  },
+  {
+    "address": "Oosterhamrikkade 119 42",
+    "external_id": "groningen-9713kc-119-42-oosterhamrikkade-2f21302195ff79b82f6685feb485f41a",
+    "size_m2": 79.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1349.0
+  },
+  {
+    "address": "Parkeerplaats Oosterhamrikkade 119 51",
+    "external_id": "groningen-9713kc-119-51-parkeerplaats-oosterhamrikkade-d450301da0a03730371767d79973d3f7",
+    "size_m2": null,
+    "source": "ikwilhuren",
+    "total_monthly": 88.0
   }
 ]
