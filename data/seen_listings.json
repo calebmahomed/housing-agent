@@ -1209,5 +1209,54 @@
     "size_m2": null,
     "source": "ikwilhuren",
     "total_monthly": 88.0
+  },
+  {
+    "address": "Heerderweg 62 K",
+    "external_id": "15339",
+    "size_m2": 74.0,
+    "source": "vesteda",
+    "total_monthly": 1265.0
+  },
+  {
+    "address": "Heerderweg 62 B",
+    "external_id": "15182",
+    "size_m2": 74.0,
+    "source": "vesteda",
+    "total_monthly": 1228.07
+  },
+  {
+    "address": "Aaltje Noordewierstraat 195 e",
+    "external_id": "181883",
+    "size_m2": 55.0,
+    "source": "vesteda",
+    "total_monthly": 1221.0
+  },
+  {
+    "address": "Sir Winston Churchillln 563",
+    "external_id": "273",
+    "size_m2": 56.0,
+    "source": "vesteda",
+    "total_monthly": 1001.0
+  },
+  {
+    "address": "Oosterhamrikkade 119 22",
+    "external_id": "groningen-9713kc-119-22-oosterhamrikkade-97ff49d83cb5e439b3c0c5d07728a824",
+    "size_m2": 72.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1233.0
+  },
+  {
+    "address": "Parkeerplaats Oosterhamrikkade 119 45",
+    "external_id": "groningen-9713kc-119-45-parkeerplaats-oosterhamrikkade-92059a5878f40c9aa400cfb432191f25",
+    "size_m2": null,
+    "source": "ikwilhuren",
+    "total_monthly": 88.0
+  },
+  {
+    "address": "Stokerstraat 6",
+    "external_id": "arnhem-6827dj-6-stokerstraat-0680fb0d1fa67775dafa3137fe7c7bc6",
+    "size_m2": 113.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1310.0
   }
 ]
