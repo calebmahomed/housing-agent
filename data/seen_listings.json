@@ -1181,5 +1181,12 @@
     "size_m2": 40.0,
     "source": "ikwilhuren",
     "total_monthly": 1306.0
+  },
+  {
+    "address": "Levendaal",
+    "external_id": "db5ab37d39d1",
+    "size_m2": 60.0,
+    "source": "pararius",
+    "total_monthly": 1125.0
   }
 ]
