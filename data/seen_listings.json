@@ -1160,5 +1160,26 @@
     "size_m2": 76.0,
     "source": "pararius",
     "total_monthly": 1193.0
+  },
+  {
+    "address": "Reigersbek 5",
+    "external_id": "nieuwegein-3434xe-5-reigersbek-35421613b70360e843f9f2a2a1e4f0a7",
+    "size_m2": null,
+    "source": "ikwilhuren",
+    "total_monthly": 1284.0
+  },
+  {
+    "address": "Haringbuisdijk 685",
+    "external_id": "amsterdam-1086va-685-haringbuisdijk-1edea906a00a33850e5644808bc29b7d",
+    "size_m2": 38.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1306.0
+  },
+  {
+    "address": "Haringbuisdijk 119",
+    "external_id": "amsterdam-1086va-119-haringbuisdijk-cf8917e73eb70a1c9fbcb2185cb625e1",
+    "size_m2": 40.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1306.0
   }
 ]
