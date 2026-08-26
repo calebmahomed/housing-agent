@@ -1286,5 +1286,26 @@
     "size_m2": 54.0,
     "source": "vesteda",
     "total_monthly": 1145.69
+  },
+  {
+    "address": "Droomtuinlaan 204",
+    "external_id": "vleuten-3452rl-204-droomtuinlaan-881dd7f9a5a01dca57180997707dc810",
+    "size_m2": 93.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1370.0
+  },
+  {
+    "address": "Vrouwenkerkhof",
+    "external_id": "3e4c3c34c539",
+    "size_m2": 30.0,
+    "source": "pararius",
+    "total_monthly": 1005.0
+  },
+  {
+    "address": "Elise van Calcarstraat",
+    "external_id": "dc72906d5d7b",
+    "size_m2": 63.0,
+    "source": "pararius",
+    "total_monthly": 936.0
   }
 ]
