@@ -1265,5 +1265,12 @@
     "size_m2": 67.0,
     "source": "vesteda",
     "total_monthly": 974.05
+  },
+  {
+    "address": "Paukenlaan 22",
+    "external_id": "dongen-5101aw-22-paukenlaan-eae44becdfc0bf774d4cacd5cc12d351",
+    "size_m2": 122.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1150.0
   }
 ]
