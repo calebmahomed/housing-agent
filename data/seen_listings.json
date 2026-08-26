@@ -1272,5 +1272,19 @@
     "size_m2": 122.0,
     "source": "ikwilhuren",
     "total_monthly": 1150.0
+  },
+  {
+    "address": "Steenhouwerskade 102",
+    "external_id": "1464",
+    "size_m2": 64.0,
+    "source": "vesteda",
+    "total_monthly": 1090.76
+  },
+  {
+    "address": "Eelkemastraat 317",
+    "external_id": "32861",
+    "size_m2": 54.0,
+    "source": "vesteda",
+    "total_monthly": 1145.69
   }
 ]
