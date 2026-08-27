@@ -1307,5 +1307,131 @@
     "size_m2": 63.0,
     "source": "pararius",
     "total_monthly": 936.0
+  },
+  {
+    "address": "Rozemarijntuin 155",
+    "external_id": "19181",
+    "size_m2": 54.0,
+    "source": "vesteda",
+    "total_monthly": 1022.07
+  },
+  {
+    "address": "Velperweg 49 77",
+    "external_id": "arnhem-6824bg-49-77-velperweg-f709632f05a49964bd748306890d3951",
+    "size_m2": 33.0,
+    "source": "ikwilhuren",
+    "total_monthly": 853.0
+  },
+  {
+    "address": "Pleiadenlaan 1 22",
+    "external_id": "groningen-9742ne-1-22-pleiadenlaan-e7c0d3f29e83341250412dd2720c2810",
+    "size_m2": 49.0,
+    "source": "ikwilhuren",
+    "total_monthly": 933.0
+  },
+  {
+    "address": "De Weverij 54",
+    "external_id": "goor-7471vr-54-de-weverij-12222989fda3343939029956844fcd95",
+    "size_m2": 88.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1015.0
+  },
+  {
+    "address": "Leeghwater 60",
+    "external_id": "amersfoort-3825mr-60-leeghwater-837fdde5980b8c2ec92f94e4f05faf8d",
+    "size_m2": null,
+    "source": "ikwilhuren",
+    "total_monthly": 1124.0
+  },
+  {
+    "address": "Dr. A.d. Sacharovlaan 290",
+    "external_id": "alphen-aan-de-rijn-2405wb-290-dr-a-d-sacharovlaan-55010b7d67eada7e3e254ef02d0025d3",
+    "size_m2": 56.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1343.0
+  },
+  {
+    "address": "Van Sijpesteijnkade 3 A",
+    "external_id": "utrecht-3521ah-3-a-van-sijpesteijnkade-4d93839752f3666f81c3c75a4917345f",
+    "size_m2": 36.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1235.0
+  },
+  {
+    "address": "Kievitdreef 33",
+    "external_id": "waddinxveen-2743eg-33-kievitdreef-21ac191df4df9f2648a3334010a21764",
+    "size_m2": 98.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1265.0
+  },
+  {
+    "address": "Rembrandtlaan 212",
+    "external_id": "enschede-7545zp-212-rembrandtlaan-19534e860c6c979e25aab9160a2b156d",
+    "size_m2": 74.0,
+    "source": "ikwilhuren",
+    "total_monthly": 875.0
+  },
+  {
+    "address": "Hulsmaatstraat 45 406",
+    "external_id": "enschede-7523wb-45-406-hulsmaatstraat-2cb3667cf7468a63f3bcfd903bd58d01",
+    "size_m2": 76.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1330.0
+  },
+  {
+    "address": "Vinkenburgstraat 40",
+    "external_id": "utrecht-3512ab-40-vinkenburgstraat-f92be95ccb22089bd731d58a6f40279f",
+    "size_m2": 50.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1365.0
+  },
+  {
+    "address": "Olga De Haasstraat 279",
+    "external_id": "amsterdam-1095pg-279-olga-de-haasstraat-09a0ddf8bb8f46cc04bbd482a14c7326",
+    "size_m2": 70.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1283.0
+  },
+  {
+    "address": "Olga De Haasstraat 217",
+    "external_id": "amsterdam-1095pg-217-olga-de-haasstraat-efa7095091211517cb40c48e4ba12af0",
+    "size_m2": 48.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1214.0
+  },
+  {
+    "address": "Van Sijpesteijnkade 487",
+    "external_id": "utrecht-3521ah-487-van-sijpesteijnkade-e9ae78617a949c57f3e5a20a5793e942",
+    "size_m2": 50.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1187.0
+  },
+  {
+    "address": "Hanzeplein 95",
+    "external_id": "groningen-9713gw-95-hanzeplein-1c93f3a5018fe5fe5cdc932a48296260",
+    "size_m2": 114.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1390.0
+  },
+  {
+    "address": "Operaplein 57",
+    "external_id": "apeldoorn-7323el-57-operaplein-12d858b4b167d8d86c9d796fb4830371",
+    "size_m2": 81.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1162.0
+  },
+  {
+    "address": "Weimarstraat",
+    "external_id": "a8ba2aa9835a",
+    "size_m2": 50.0,
+    "source": "pararius",
+    "total_monthly": 1030.0
+  },
+  {
+    "address": "Agaatlaan",
+    "external_id": "976cd2966ca1",
+    "size_m2": 77.0,
+    "source": "pararius",
+    "total_monthly": 1127.0
   }
 ]
