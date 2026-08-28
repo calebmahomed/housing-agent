@@ -1433,5 +1433,33 @@
     "size_m2": 77.0,
     "source": "pararius",
     "total_monthly": 1127.0
+  },
+  {
+    "address": "Eelkemastraat 139",
+    "external_id": "32778",
+    "size_m2": 54.0,
+    "source": "vesteda",
+    "total_monthly": 1173.15
+  },
+  {
+    "address": "Pleiadenlaan 1 115",
+    "external_id": "groningen-9742ne-1-115-pleiadenlaan-6e1ca9eee95799f5c3ac02f2170fb97f",
+    "size_m2": 49.0,
+    "source": "ikwilhuren",
+    "total_monthly": 933.0
+  },
+  {
+    "address": "Vrolikstraat",
+    "external_id": "37a37c9b4092",
+    "size_m2": 55.0,
+    "source": "pararius",
+    "total_monthly": 1138.0
+  },
+  {
+    "address": "Van Lennepstraat",
+    "external_id": "d1a692fd00cf",
+    "size_m2": 74.0,
+    "source": "pararius",
+    "total_monthly": 936.0
   }
 ]
