@@ -1461,5 +1461,19 @@
     "size_m2": 74.0,
     "source": "pararius",
     "total_monthly": 936.0
+  },
+  {
+    "address": "Turkooislaan",
+    "external_id": "259808a26c77",
+    "size_m2": 65.0,
+    "source": "pararius",
+    "total_monthly": 936.0
+  },
+  {
+    "address": "Pluvierstraat",
+    "external_id": "edb576747c7b",
+    "size_m2": 61.0,
+    "source": "pararius",
+    "total_monthly": 1350.0
   }
 ]
