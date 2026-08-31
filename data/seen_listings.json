@@ -1475,5 +1475,26 @@
     "size_m2": 61.0,
     "source": "pararius",
     "total_monthly": 1350.0
+  },
+  {
+    "address": "Pierre van Hauwelaan 108",
+    "external_id": "delft-2625wl-108-pierre-van-hauwelaan-cecd6653a68ef95e529f469ea742510c",
+    "size_m2": 45.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1194.0
+  },
+  {
+    "address": "Betaplein 103",
+    "external_id": "leiden-2321ks-103-betaplein-3128e7fd4c79629ad353863b8871a39c",
+    "size_m2": 46.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1091.0
+  },
+  {
+    "address": "Pierre van Hauwelaan 144",
+    "external_id": "delft-2625wl-144-pierre-van-hauwelaan-3385fc42c708a43d7414fb50c83b57ff",
+    "size_m2": 66.0,
+    "source": "ikwilhuren",
+    "total_monthly": 1304.0
   }
 ]
